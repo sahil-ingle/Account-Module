@@ -14,11 +14,16 @@ import AcademicYearPage from "./Master/AddAcademicPage";
 import GenerateReceipt from "./Generatereceipt";
 import CollectFee from "./CollectFee";
 import Cookies from "js-cookie";
-import AddBranchPage from "./Master/AddBranchPage";
-import AddFeeHeadsPage from "./Master/AddFeeHeadsPage";
+// import AddBranchPage from "./Master/AddBranchPage";
+// import AddFeeHeadsPage from "./Master/AddFeeHeadsPage";
 import Dashboard from "./Dashboard";
-import AddCategoryPage from "./Master/AddCategoryPage";
+// import AddCategoryPage from "./Master/AddCategoryPage";
 import MappingFeeHeadsToCategoriesPage from "./Master/MappingFeeHeadsToCategoriesPage";
+import AddBranchForm from "./Master/AddBranchForm";
+import AddFeeHeadForm from "./AddFeeHeadForm";
+import AddCategoryForm from "./AddCategoryForm";
+import AddAcademicYearForm from "./AddAcademicYearForm";
+import MapFeeHeadsForm from "./MapFeeHeadsForm";
 
 const Layout = () => {
   let history = useHistory();
@@ -98,12 +103,12 @@ const Layout = () => {
                 <Route
                   exact
                   path="/addacademicyear"
-                  component={AcademicYearPage}
+                  component={AddAcademicYearForm}
                 />
-                <Route exact path="/addbranch" component={AddBranchPage} />
-                <Route exact path="/addfeeheads" component={AddFeeHeadsPage} />
-                <Route exact path="/addcategory" component={AddCategoryPage} />
-                <Route exact path="/mapfeetocat" component={MappingFeeHeadsToCategoriesPage} />
+                <Route exact path="/addbranch" component={AddBranchForm} />
+                <Route exact path="/addfeeheads" component={AddFeeHeadForm} />
+                <Route exact path="/addcategory" component={AddCategoryForm} />
+                <Route exact path="/mapfeetocat" component={MapFeeHeadsForm} />
                 <Route exact path="/logout" component={""} />
               </Switch>
             </div>

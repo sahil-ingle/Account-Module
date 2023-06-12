@@ -125,6 +125,68 @@ app.post("/addstudent", (req, res) => {
   );
 });
 
+app.post("/collect-fee", (req, res) => {
+  const {
+    receiptNo,
+    date,
+    academicYear,
+    name,
+    branch,
+    collegeYear,
+    bankName,
+    bankBranch,
+    chequeDate,
+    chequeNo,
+  } = req.body;
+  const query =
+    "INSERT INTO fee_collection (receiptNo, date, academicYear, name, branch, collegeYear, bankName, bankBranch, chequeDate, chequeNo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+  con.query(
+    query,
+    [
+      receiptNo,
+      date,
+      academicYear,
+      name,
+      branch,
+      collegeYear,
+      bankName,
+      bankBranch,
+      chequeDate,
+      chequeNo,
+    ],
+    (err, result) => {
+      if (err) {
+        console.error("Error inserting data into the database:", err);
+        res.status(500).json({ error: "An error occurred" });
+        return;
+      }
+      else{
+        res.status(200).json({ message: "Data inserted successfully", result: result });
+      }
+      res.end(); // Close the connection
+    }
+  );
+});
+
+app.post("/addBranch", (req, res) => {
+  const {name} = req.body;
+  const query =
+    "INSERT INTO branch (name) VALUES (?)";
+  con.query(query, [name],
+    (err, result) => {
+      if (err) {
+        console.error("Error inserting data into the database:", err);
+        res.status(500).json({ success:false,  err });
+        return;
+      }
+      else{
+        res.status(200).json({ success:true, message: "Data inserted successfully", result: result });
+      }
+      res.end(); // Close the connection
+    }
+  );
+});
+
 app.listen(port, () => {
   console.log(`running backend server on ${port}`);
 });

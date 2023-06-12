@@ -3,6 +3,7 @@ import Layout from "./components/Layout";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import LoginPage from "./components/LoginPage";
 import RegisterPage from "./components/RegisterPage";
+import AddStudentForm from "./components/AddStudentForm";
 
 const App = () => {
   return (

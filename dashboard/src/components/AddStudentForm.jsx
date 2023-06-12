@@ -77,6 +77,7 @@ const AddStudentForm = () => {
   return (
     <div className="add-student-form">
       {/* <h2>Add Student Form</h2> */}
+      <h3>Master {'>'} Add Student</h3>
       <form onSubmit={handleSubmit}>
         <div className="form-section required-fields">
           {/* <h3>Personal Information</h3> */}
