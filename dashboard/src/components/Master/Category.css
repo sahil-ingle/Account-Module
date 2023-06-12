@@ -1,0 +1,18 @@
+.add-category-button {
+    background-color: green;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+  }
+  
+  .messagepara {
+    margin-top: 16px;
+    color: green;
+    font-weight: bold;
+  }
+
+  .catinput {
+    margin-left: 10px;
+  }
+  

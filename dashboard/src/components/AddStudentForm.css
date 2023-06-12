@@ -1,0 +1,95 @@
+.add-student-form {
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 20px;
+  /* background-color: #f5f5f5; */
+  border-radius: 8px;
+  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+}
+
+.add-student-form h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.form-section {
+  margin-bottom: 30px;
+}
+
+.form-section h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #666;
+}
+
+.form-group {
+  margin: 25px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.form-item label {
+  display: inline-block;
+  font-weight: bold;
+  margin-right: 10px;
+  color: #333;
+  flex: 0 0 60px; /* Adjust the width as needed */
+  font-size: 16px;
+}
+
+.form-item input {
+  flex: 0 0 60px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: border-color 0.3s ease;
+  margin-left: 10px; /* Add this line to create spacing between label and input */
+}
+
+.form-item input:focus {
+  outline: none;
+  border-color: #00b796;
+}
+#form-group2 input{
+  width: 50%;
+}
+#form-group2>:nth-child(2){
+  width: 14%;
+}
+
+#form-group4 input{
+  width: 40%;
+}
+
+#form-group4 select{
+  width: 50%;
+}
+
+button[type="submit"] {
+  display: block;
+  /* width: 100%; */
+  padding: 10px 20px;
+  margin-top: 40px;
+  background-color: #00b796;
+  color: #fff;
+  font-size: 16px;
+  /* font-weight: bold; */
+  border: 1px solid transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+button[type="submit"]:hover {
+  border: 1px solid #00b796;
+  background-color: transparent;
+  color: #00b796;
+}
+
+hr {
+  margin: 20px 0;
+  border: none;
+  border-top: 1px solid #ccc;
+}

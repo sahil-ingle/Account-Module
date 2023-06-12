@@ -1,0 +1,52 @@
+.year-selector {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .year-button {
+    background-color: #fff;
+    color: #333;
+    border: 1px solid #333;
+    padding: 8px 16px;
+    cursor: pointer;
+  }
+  
+  .year-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    z-index: 1;
+    background-color: #fff;
+    border: 1px solid #333;
+    border-top: none;
+    display: none;
+  }
+  
+  .year-list li {
+    padding: 8px 16px;
+    cursor: pointer;
+  }
+  
+  .year-list li:hover {
+    background-color: #eee;
+  }
+  
+  .year-selector.is-open .year-list {
+    display: block;
+  }
+  
+  .add-year-button {
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    margin-top: 16px;
+  }
+  
+  .messagepara {
+    margin-top: 16px;
+    color: #4caf50;
+    font-weight: bold;
+  }

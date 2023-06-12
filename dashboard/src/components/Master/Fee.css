@@ -1,0 +1,15 @@
+.add-fee-head-button {
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    margin-top: 16px;
+  }
+  
+  .messagepara {
+    margin-top: 16px;
+    color: #4caf50;
+    font-weight: bold;
+  }
+  

@@ -1,0 +1,163 @@
+.mycontainer {
+  margin: 10vh auto;
+}
+
+.main {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.section1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+}
+
+.imglogo {
+  width: 25em;
+}
+
+.section2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  border-left: 3px solid #a5a5a5;
+}
+
+.r-cont {
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  align-items: center;
+  height: 100%;
+  margin: 0 40px;
+}
+
+.r-cont h1 {
+  margin-bottom: 20px;
+  font-size: 2.4em;
+}
+
+.r-cont p {
+  font-size: 1em;
+  color: #a8a8a8;
+}
+
+.myform {
+  margin-top: 30px;
+  width: 100%;
+  align-self: start;
+}
+
+.myform-group > div {
+  margin: 10px 0;
+  font-weight: bold;
+}
+
+.myform-group > input {
+  outline: none;
+  margin-bottom: 10px;
+  padding: 10px;
+  width: 100%;
+  border: 1px solid #d4d4d4;
+  color: #a8a8a8;
+  border-radius: 5px;
+}
+
+.passwordinp > input {
+  color: #a8a8a8;
+  border: none;
+  width: 95%;
+  box-shadow: none;
+  outline: none;
+}
+
+.passwordinp > button {
+  border: none;
+  background-color: transparent;
+  /* margin-left: 20px; */
+}
+
+.passwordinp {
+  margin-bottom: 10px;
+  padding: 7px;
+  border: 1px solid #d4d4d4;
+  border-radius: 5px;
+}
+
+.required-field {
+  color: red;
+  margin-left: 5px;
+}
+
+.erroremail {
+  color: red !important;
+  font-size: 1em;
+}
+.errorpass {
+  color: red !important;
+  font-size: 1em;
+}
+
+#btn {
+  display: block;
+  margin: 0 auto;
+  margin-top: 20px;
+  width: 30%;
+  max-width: 35%;
+  padding: 5px 5px;
+  font-size: 0.8em;
+  color: white;
+  background-color: #00a1d9;
+}
+
+.gotologin{
+  padding-top: 30px;
+  font-size: 0.8em;
+}
+
+.gotologin>:first-child{
+  /* text-decoration: none; */
+  color: #00a1d9;
+}
+
+.footer {
+  font-size: 0.7em;
+  margin-top: 100px;
+  color: black;
+}
+
+@media only screen and (max-width: 1200px) {
+  body {
+    font-size: 18px;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  body {
+    font-size: 15px;
+  }
+}
+
+@media only screen and (max-width: 740px) {
+  body {
+    font-size: 10px;
+  }
+  /* .main {
+    flex-direction: column;
+  } */
+
+  .section2 {
+    border-left: none;
+    width: 100%;
+  }
+
+  .passwordinp > input {
+    width: 90%;
+  }
+}

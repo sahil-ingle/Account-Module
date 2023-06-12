@@ -1,0 +1,60 @@
+.dt{
+    text-align: right;
+}
+
+.para{
+    margin: 2px 0;
+}
+
+.amountcard{
+    border: 1px solid grey;
+    max-width: 310px;
+    /* max-height: 100px; */
+    padding: 10px 10px 20px 20px;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    box-shadow: 1px 0px 8px 0px #a5a5a5;
+}
+
+.topsec{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.topsec>span{
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.amountcard>span{
+    color: #00b8b8;
+    font-weight:900;
+    font-size: 22px;
+}
+
+.selectperiod{
+    border: 1px solid grey;
+    border-radius: 5px;
+    color: #848484;
+    background-color: rgb(221, 220, 220);
+    margin-left: 5px;
+    padding-left: 2px;
+    padding-right: 2px;
+}
+
+.selectperiod>i{
+    font-size: 12px;
+    margin: 5px;
+}
+
+.period{
+    background-color: transparent;
+    border: none;
+    color: #848484;
+    font-size: 12px;
+    outline: none;
+}
