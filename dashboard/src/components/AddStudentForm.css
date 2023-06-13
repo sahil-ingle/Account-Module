@@ -48,6 +48,15 @@
   margin-left: 10px; /* Add this line to create spacing between label and input */
 }
 
+.form-item select{
+  flex: 0 0 60px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: border-color 0.3s ease;
+  margin-left: 10px;
+}
+
 .form-item input:focus {
   outline: none;
   border-color: #00b796;
