@@ -14,7 +14,7 @@ const con = mysql.createConnection({
   user: "root",
   host: "localhost",
   password: "",
-  database: "accoutsection",
+  database: "accountsection",
 });
 
 app.post("/register", (req, res) => {

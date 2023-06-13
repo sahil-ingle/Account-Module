@@ -180,29 +180,38 @@ const styles = {
   formContainer: {
     padding: "20px",
     borderRadius: "4px",
+    flex: "none",
   },
 
   inputGroup: {
-    display: "flex",
     marginBottom: "10px",
     fontWeight: "bold",
+
   },
   label: {
     marginRight: "10px",
     padding: "10px",
+    marginBottom: "20px",
+    marginTop: "20px",
   },
   input: {
-    padding: "5px",
+    flex: "0 0 60px",
+    border: "1px solid #ccc",
+    transition: "border-color 0.3s ease",
+    padding: "8px",
     marginRight: "30px",
-    marginBottom: "30px",
-    marginLeft: "30px"
+    marginBottom: "20px",
+    marginLeft: "20px",
+    marginTop: "20px",
+    borderRadius: "4px",
+    borderColor: "#4d4d4d",
   },
   buttonContainer: {
     display: "flex",
 
   },
   submitButton: {
-    padding: "10px",
+    padding: "10px 20px",
     backgroundColor: "#00b695",
     color: "white",
     border: "none",
@@ -210,20 +219,19 @@ const styles = {
     cursor: "pointer",
     marginRight: "70px",
     marginBottom: "30px",
-    flex:"2",
   },
 
 
-  tableContainer: { 
-    maxHeight: "400px", 
+  tableContainer: {
+    maxHeight: "400px",
     border: "1px solid #ccc",
-    maxWidth: "40%", 
+    maxWidth: "40%",
 
   },
 
   table: {
-    borderCollapse: "separate", 
-    width: "100%", 
+    borderCollapse: "separate",
+    width: "100%",
   },
 
   tableCell: {

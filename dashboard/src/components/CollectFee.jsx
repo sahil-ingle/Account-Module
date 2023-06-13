@@ -92,11 +92,11 @@ const CollectFee = () => {
   return (
     <div style={styles.mainContent}>
       <div style={styles.formContainer}>
-        <h1> COLLECT STUDENT FEE </h1>
-        <form onSubmit={handleFormSubmit2}>
+        <h2> COLLECT STUDENT FEE </h2>
+        <form onSubmit={handleFormSubmit2} style={styles.form}>
           <div style={styles.gridContainer}>
             <div style={styles.inputGroup}>
-              <h2>Basic Details</h2>
+              <h3>Basic Details</h3>
               <div style={styles.inputBox}>
                 <div style={styles.gridInputContainer}>
                   <div style={styles.label}>
@@ -140,7 +140,7 @@ const CollectFee = () => {
               </div>
             </div>
             <div style={styles.inputGroup}>
-              <h2>Student Details </h2>
+              <h3>Student Details </h3>
               <div style={styles.inputBox}>
                 <div style={styles.gridInputContainer}>
                   <div style={styles.label}>
@@ -184,7 +184,7 @@ const CollectFee = () => {
               </div>
             </div>
             <div style={styles.inputGroup}>
-              <h2>Bank Details </h2>
+              <h3>Bank Details </h3>
               <div style={styles.inputBox}>
                 <div style={styles.gridInputContainer}>
                   <div style={styles.label}>
@@ -279,14 +279,14 @@ const CollectFee = () => {
                     <div style={styles.buttonContainer}>
                       <button
                         type="submit"
-                        style={styles.submitButton}
+                        style={{...styles.submitButton, backgroundColor:"#e6e6e6", color:"black"}}
                         onClick={handleFormSubmit2}
                       >
                         Add Line
                       </button>
                       <button
                         type="button"
-                        style={styles.submitButton}
+                        style={{...styles.submitButton, backgroundColor:"#e6e6e6", color:"black"}}
                         onClick={handleDelete}
                       >
                         Delete Line
@@ -328,26 +328,11 @@ const styles = {
     flex: 1,
     padding: "20px",
   },
-  greeting: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginBottom: "20px",
+
+  form:{
+    marginTop: "20px"
   },
-  dt: {
-    display: "flex",
-    flexDirection: "column",
-    margin: "0 5px",
-  },
-  para: {
-    margin: "2px 0",
-  },
-  horizontalLine: {
-    border: "none",
-    borderTop: "1px solid #ccc",
-    margin: "20px 0",
-  },
+
   formContainer: {
     padding: "0px 20px 0px 0px",
     borderRadius: "4px",
@@ -382,9 +367,13 @@ const styles = {
     width: "120px",
   },
   input: {
+    flex: "0 0 60px",
+    border: "1px solid #ccc",
+    transition: "border-color 0.3s ease",
+    borderRadius: "4px",
+    borderColor: "#4d4d4d",
     padding: "5px",
     margin: "5px 5px 5px 5px",
-    borderRadius: "5px",
     borderColor: "#4d4d4d",
   },
   buttonContainer: {
@@ -396,6 +385,7 @@ const styles = {
   submitButton: {
     padding: "10px 35px",
     backgroundColor: "#00b695",
+    boxShadow: '1px 2px 9px #F4AAB9',
     color: "white",
     border: "none",
     borderRadius: "4px",

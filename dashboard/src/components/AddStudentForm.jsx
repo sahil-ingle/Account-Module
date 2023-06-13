@@ -102,6 +102,7 @@ const AddStudentForm = () => {
                 onChange={handleInputChange}
                 placeholder="putyourname"
                 required
+                style={{marginLeft: 0,}}
               />
             </div>
             <div className="form-item">
