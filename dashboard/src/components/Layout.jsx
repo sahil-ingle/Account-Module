@@ -10,19 +10,17 @@ import {
 } from "react-router-dom";
 import MainContent from "./Maincontent";
 import AddStudentForm from "./AddStudentForm";
-import AcademicYearPage from "./Master/AddAcademicPage";
 import GenerateReceipt from "./Generatereceipt";
 import CollectFee from "./CollectFee";
 import Cookies from "js-cookie";
-// import AddBranchPage from "./Master/AddBranchPage";
 // import AddFeeHeadsPage from "./Master/AddFeeHeadsPage";
 import Dashboard from "./Dashboard";
-// import AddCategoryPage from "./Master/AddCategoryPage";
+import AddCategoryPage from "./Master/AddCategoryPage";
 import MappingFeeHeadsToCategoriesPage from "./Master/MappingFeeHeadsToCategoriesPage";
 import AddBranchForm from "./Master/AddBranchForm";
 import AddFeeHeadForm from "./AddFeeHeadForm";
 import AddCategoryForm from "./AddCategoryForm";
-import AddAcademicYearForm from "./AddAcademicYearForm";
+import AddAcademicYearForm from "./Master/AddAcademicYearForm";
 import MapFeeHeadsForm from "./MapFeeHeadsForm";
 
 const Layout = () => {

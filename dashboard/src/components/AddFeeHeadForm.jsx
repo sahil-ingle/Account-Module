@@ -1,104 +1,74 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
+import "./AddFeeForm.css";
+import axios from "axios";
 
 const AddFeeHeadForm = () => {
-  const [feeHead, setFeeHead] = useState("");
+  const [feehead, setFeehead] = useState("");
+  const [message, setMessage] = useState("");
 
-  //academic year selector
-  const handleFormSubmit = (event) => {
-    event.preventDefault();
-    // Do something with the form data
-    console.log("Fee Head:", feeHead);
+  const handleFeeHead = (e) => {
+    setFeehead(e.target.value);
   };
 
+  const handleAddYear = (e) => {
+    e.preventDefault();
+    if (feehead) {
+      setMessage(`Fee Head ${feehead} added successfully!`);
+      addData();
+    } else {
+      setMessage("Please enter a Fee Head");
+    }
+  };
 
+  const addData = async () => {
+    try {
+      // const config = { headers: { "Content-Type": "application/json" } };
+      const { data } = await axios.post(
+        `http://localhost:4000/addFeeHead`,
+        { name: feehead }
+        // config
+      );
+      if (data.success === true) {
+        console.log("Data Saved successfully");
+      } else {
+        console.log(data.error);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
-    <div style={styles.mainContent}>
-      <h3>Master {'>'} Add Fee Heads</h3>
-      <div style={styles.formContainer}>
-      <form onSubmit={handleFormSubmit}>
-          <div style={styles.inputGroup}>
-            <label htmlFor="feeHead">Fee Head:</label>
-            <input
-              type="text"
-              id="feeHead"
-              value={feeHead}
-              placeholder="Tution Fees"
-              onChange={(e) => setFeeHead(parseInt(e.target.value))}
-              style={styles.input}
-            />
+    <div className="mainContent">
+      <h3>Master {">"} Add Fee Heads</h3>
+
+      <div className="formContainer">
+        <form onSubmit={handleAddYear}>
+          <div className="inputGroup">
+            <label htmlFor="feehead">Fee Head:</label>
+            <div className="fee-selector">
+              <input
+                className="fee-input"
+                type="text"
+                name="feehead"
+                placeholder="Tuition Fees"
+                value={feehead}
+                onChange={(e) => {
+                  setFeehead(e.target.value);
+                }}
+              />
+            </div>
           </div>
-          <div style={styles.buttonContainer}>
-            <button type="submit" style={styles.submitButton}>
+          <div className="buttonContainer">
+            <button type="submit" className="submitButton">
               Add Fee Head
             </button>
           </div>
         </form>
-        
+        <p className="messagepara">{message}</p>
       </div>
     </div>
   );
 };
 
 export default AddFeeHeadForm;
-
-
-const styles = {
-  mainContent: {
-    flex: 1,
-    padding: "20px",
-  },
-  greeting: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginBottom: "20px",
-  },
-  dt: {
-    display: "flex",
-    flexDirection: "column",
-    margin: "0 5px",
-  },
-  para: {
-    margin: "2px 0",
-  },
-  horizontalLine: {
-    border: "none",
-    borderTop: "1px solid #ccc",
-    margin: "20px 0",
-  },
-
-  formContainer: {
-    padding: "20px",
-    borderRadius: "4px",
-  },
-
-  inputGroup: {
-    display: "flex",
-    marginBottom: "10px",
-    fontWeight: "bold",
-  },
-  label: {
-    marginRight: "10px",
-    padding: "10px",
-  },
-  input: {
-    padding: "5px",
-    marginRight: "30px",
-    marginBottom: "30px",
-    marginLeft: "30px"
-  },
-  buttonContainer: {
-    display: "flex",
-  },
-  submitButton: {
-    padding: "10px 20px",
-    backgroundColor: "#00b695",
-    color: "white",
-    border: "none",
-    borderRadius: "4px",
-    cursor: "pointer",
-  },
-};
-

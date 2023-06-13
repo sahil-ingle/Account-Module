@@ -1,15 +1,15 @@
-.year-selector {
+.fee-selector {
   position: relative;
   display: inline-block;
   margin: 0 30px;
 }
 
-.year-button {
+.fee-input {
   background-color: #fff;
   color: grey;
   border: 1px solid grey;
   border-radius: 5px;
-  padding: 10px 16px 10px 20px;
+  padding: 15px 16px 15px 20px;
   cursor: pointer;
   outline: none;
   box-shadow: none;
@@ -17,40 +17,6 @@
   font-family: "Urbanist", sans-serif;
 }
 
-.year-list {
-  list-style-type: none;
-  padding: 10px;
-  width: 100%;
-  margin: 0;
-  position: absolute;
-  z-index: 1;
-  background-color: #fff;
-  border: 1px solid grey;
-  border-top: none;
-  display: none;
-}
-
-.year-list li {
-  padding: 8px 16px;
-  cursor: pointer;
-}
-
-.year-list li:hover {
-  background-color: #eee;
-}
-
-.year-selector.is-open .year-list {
-  display: block;
-}
-
-.add-year-button {
-  background-color: #4caf50;
-  color: #fff;
-  border: none;
-  padding: 8px 16px;
-  cursor: pointer;
-  margin-top: 16px;
-}
 
 .messagepara {
   margin-top: 16px;
@@ -118,11 +84,11 @@
 }
 
 .submitButton {
-  padding: 10px 20px;
-  margin-top: 15px;
-  background-color: #00b695;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
+    padding: 10px 20px;
+    margin-top: 15px;
+    background-color: #00b695;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }

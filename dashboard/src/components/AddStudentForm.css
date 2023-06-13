@@ -67,7 +67,7 @@
   width: 50%;
 }
 
-button[type="submit"] {
+.add-student-form>form>button[type="submit"] {
   display: block;
   /* width: 100%; */
   padding: 10px 20px;
@@ -82,13 +82,13 @@ button[type="submit"] {
   transition: all 0.3s ease-in-out;
 }
 
-button[type="submit"]:hover {
+.add-student-form>form>button[type="submit"]:hover {
   border: 1px solid #00b796;
   background-color: transparent;
   color: #00b796;
 }
 
-hr {
+.add-student-form hr {
   margin: 20px 0;
   border: none;
   border-top: 1px solid #ccc;
