@@ -72,6 +72,7 @@ const LoginPage = () => {
         console.log("Login successful");
         Cookies.set("token", data.token);
         history.push("/");
+        window.location.reload();
       } else {
         console.log(data.message);
       }
