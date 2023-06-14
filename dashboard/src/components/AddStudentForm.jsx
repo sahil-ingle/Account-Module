@@ -89,6 +89,7 @@ const AddStudentForm = () => {
                 value={studentData.title}
                 onChange={handleInputChange}
                 required
+                style={{borderRadius: "4px 0px 0px 4px"}}
               >
                 <option value="Mr">Mr</option>
                 <option value="Ms">Ms</option>
@@ -102,7 +103,7 @@ const AddStudentForm = () => {
                 onChange={handleInputChange}
                 placeholder="putyourname"
                 required
-                style={{marginLeft: 0,}}
+                style={{marginLeft: 0, borderRadius: "0px 4px 4px 0px"}}
               />
             </div>
             <div className="form-item">
