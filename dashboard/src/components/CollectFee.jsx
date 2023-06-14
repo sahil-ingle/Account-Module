@@ -127,7 +127,7 @@ const CollectFee = () => {
                 </div>
                 <div style={styles.inputGroup}>
                   <input
-                    type="number"
+                    type="date"
                     id="date"
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
@@ -230,7 +230,7 @@ const CollectFee = () => {
                 </div>
                 <div style={styles.inputGroup}>
                   <input
-                    type="number"
+                    type="date"
                     id="chequeDate"
                     value={chequeDate}
                     onChange={(e) => setChequeDate(e.target.value)}
