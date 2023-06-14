@@ -85,7 +85,7 @@ const AddStudentForm = () => {
   return (
     <div className="add-student-form">
       {/* <h2>Add Student Form</h2> */}
-      <h3>Master {'>'} Add Student</h3>
+      <h3 style={{ letterSpacing: 3,fontWeight: "bolder" }}>Master Tab {'>'} Add Student</h3>
       <form onSubmit={handleSubmit}>
         <div className="form-section required-fields">
           {/* <h3>Personal Information</h3> */}
@@ -97,7 +97,7 @@ const AddStudentForm = () => {
                 value={studentData.title}
                 onChange={handleInputChange}
                 required
-                style={{borderRadius: "4px 0px 0px 4px"}}
+                style={{marginRight: 0, borderRadius: "4px 0px 0px 4px"}}
               >
                 <option value="Mr">Mr</option>
                 <option value="Ms">Ms</option>
@@ -111,7 +111,7 @@ const AddStudentForm = () => {
                 onChange={handleTextInputChange}
                 placeholder="putyourname"
                 required
-                style={{marginLeft: 0, borderRadius: "0px 4px 4px 0px"}}
+                style={{marginLeft: 0, borderRadius: "0px 4px 4px 0px", width: "200px"}}
               />
             </div>
             <div className="form-item">
@@ -122,6 +122,7 @@ const AddStudentForm = () => {
                 value={studentData.telephone}
                 onChange={handleInputChange}
                 placeholder="88888888"
+                style={{width: "180px"}}
               />
             </div>
             <div className="form-item">
@@ -132,6 +133,7 @@ const AddStudentForm = () => {
                 value={studentData.email}
                 onChange={handleInputChange}
                 placeholder="yourmail@gmail.com"
+                style={{width: "250px"}}
               />
             </div>
           </div>
@@ -154,6 +156,7 @@ const AddStudentForm = () => {
                 value={studentData.pin}
                 onChange={handleInputChange}
                 placeholder="400004"
+                style={{width: "75px"}}
               />
             </div>
             <div className="form-item">
@@ -164,6 +167,7 @@ const AddStudentForm = () => {
                 value={studentData.addr1}
                 onChange={handleInputChange}
                 placeholder="400004"
+                style={{width: "200px"}}
               />
             </div>
             <div className="form-item">
@@ -174,6 +178,7 @@ const AddStudentForm = () => {
                 value={studentData.addr2}
                 onChange={handleInputChange}
                 placeholder="400004"
+                style={{width: "200px"}}
               />
             </div>
           </div>
@@ -188,6 +193,7 @@ const AddStudentForm = () => {
                 name="previous_institute"
                 value={studentData.previous_institute}
                 onChange={handleTextInputChange}
+                style={{width: "200px"}}
               />{" "}
             </div>
             <div className="form-item">
@@ -197,6 +203,7 @@ const AddStudentForm = () => {
                 name="previous_education"
                 value={studentData.previous_education}
                 onChange={handleTextInputChange}
+                style={{width: "200px"}}
               />{" "}
             </div>
             <div className="form-item">
@@ -207,6 +214,7 @@ const AddStudentForm = () => {
                 value={studentData.gradeofmarks}
                 onChange={handleInputChange}
                 placeholder="999"
+                style={{width: "70px"}}
               />
             </div>{" "}
           </div>
@@ -219,6 +227,7 @@ const AddStudentForm = () => {
                 value={studentData.yearofadmission}
                 onChange={handleInputChange}
                 placeholder="1999"
+                style={{width: "75px"}}
               />{" "}
             </div>
             <div className="form-item">
@@ -229,6 +238,7 @@ const AddStudentForm = () => {
                 value={studentData.yearofpassing}
                 onChange={handleInputChange}
                 placeholder="2002"
+                style={{width: "75px"}}
               />{" "}
             </div>
             <div className="form-item">
@@ -246,6 +256,7 @@ const AddStudentForm = () => {
                 name="category"
                 value={studentData.category}
                 onChange={handleInputChange}
+                style={{marginRight: "0px"}}
               >
                 <option value="General">General</option>
                 <option value="Regular Students">Regular Students</option>

@@ -63,7 +63,7 @@ const AddAcademicYearForm = () => {
 
   return (
     <div className="mainContent">
-      <h3>Master {">"} Add Academic Year</h3>
+      <h3 style={{ letterSpacing: 3,fontWeight: "bolder" }}>Master Tab {">"} Add Academic Year</h3>
 
       <div className="formContainer">
         <form onSubmit={handleAddYear}>

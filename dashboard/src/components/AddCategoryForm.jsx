@@ -16,7 +16,7 @@ const AddCategoryForm = () => {
   return (
     <div style={styles.mainContent}>
 
-      <h3>Master {'>'} Add Category</h3>
+      <h3 style={{ letterSpacing: 3,fontWeight: "bolder" }}>Master Tab {'>'} Add Category</h3>
 
       <div style={styles.formContainer}>
       <form onSubmit={handleFormSubmit}>

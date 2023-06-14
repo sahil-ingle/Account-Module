@@ -143,15 +143,22 @@ const GenerateReceipt = () => {
             style={{
               ...styles.input,
               backgroundImage: 'none',
-              marginLeft: '30px',
+              marginLeft: '30px', paddingLeft: "7px",
             }} // Remove the search icon
           >
             <option value="report" disabled hidden>
               Select Report
             </option>
-            <option value="report1">Report 1</option>
-            <option value="report2">Report 2</option>
-            <option value="report3">Report 3</option>
+            <option value="dailyTransaction">Daily Transaction report</option>
+            <option value="balanceFee">Balance Fee report</option>
+            <option value="admission">Admission report</option>
+            <option value="installmentWise">Installment wise report</option>
+            <option value="monthlyTransaction">Monthly Transaction report</option>
+            <option value="yearlyTransaction">Yearly Transaction report</option>
+            <option value="individualTransaction">Individual Transaction report of students</option>
+            <option value="feeHeadwise">Fee headwise Transaction report</option>
+            <option value="branchWise">Branch wise Transaction report</option>
+            <option value="categoryWise">Category Wise Transaction report</option>
           </select>
         </div>
         <div style={{ ...styles.formContainer, paddingTop: '20px' }}>
@@ -172,7 +179,7 @@ export default GenerateReceipt;
 
 
 const styles = {
-  
+
   h2: {
     marginTop: "20px",
     marginBottom: "20px",

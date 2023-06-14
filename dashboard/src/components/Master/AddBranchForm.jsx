@@ -68,7 +68,7 @@ const AddBranchForm = () => {
 
   return (
     <div style={styles.mainContent}>
-      <h3>Master {'>'} Add Branch</h3>
+      <h3 style={{ letterSpacing: 3,fontWeight: "bolder" }}>Master Tab {'>'} Add Branch</h3>
 
       <div style={styles.formContainer}>
       <form onSubmit={handleFormSubmit}>
