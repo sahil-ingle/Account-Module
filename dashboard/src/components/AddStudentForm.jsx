@@ -31,6 +31,14 @@ const AddStudentForm = () => {
       [name]: value,
     }));
   };
+  const handleTextInputChange = (e) => {
+    const { name, value } = e.target;
+    const onlyText = value.replace(/[^A-Za-z ]/g, ""); // Remove any non-text characters
+    setStudentData((prevState) => ({
+      ...prevState,
+      [name]: onlyText,
+    }));
+  };
 
   function generateAcademicYearOptions() {
     const currentYear = new Date().getFullYear();
@@ -100,7 +108,7 @@ const AddStudentForm = () => {
                 type="text"
                 name="name"
                 value={studentData.name}
-                onChange={handleInputChange}
+                onChange={handleTextInputChange}
                 placeholder="putyourname"
                 required
                 style={{marginLeft: 0, borderRadius: "0px 4px 4px 0px"}}
@@ -109,7 +117,7 @@ const AddStudentForm = () => {
             <div className="form-item">
               <label>Telephone</label>
               <input
-                type="text"
+                type="number"
                 name="telephone"
                 value={studentData.telephone}
                 onChange={handleInputChange}
@@ -119,7 +127,7 @@ const AddStudentForm = () => {
             <div className="form-item">
               <label>Email</label>
               <input
-                type="text"
+                type="email"
                 name="email"
                 value={studentData.email}
                 onChange={handleInputChange}
@@ -179,7 +187,7 @@ const AddStudentForm = () => {
                 type="text"
                 name="previous_institute"
                 value={studentData.previous_institute}
-                onChange={handleInputChange}
+                onChange={handleTextInputChange}
               />{" "}
             </div>
             <div className="form-item">
@@ -188,7 +196,7 @@ const AddStudentForm = () => {
                 type="text"
                 name="previous_education"
                 value={studentData.previous_education}
-                onChange={handleInputChange}
+                onChange={handleTextInputChange}
               />{" "}
             </div>
             <div className="form-item">
@@ -229,7 +237,7 @@ const AddStudentForm = () => {
                 type="text"
                 name="current_status"
                 value={studentData.current_status}
-                onChange={handleInputChange}
+                onChange={handleTextInputChange}
               />{" "}
             </div>
             <div className="form-item">

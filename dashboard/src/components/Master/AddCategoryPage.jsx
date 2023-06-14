@@ -19,7 +19,7 @@ const AddCategoryPage = () => {
 
   return (
     <div>
-      <h1>Add Category</h1>
+      <h1>Add Category OK</h1>
       Category Name :
       <input
         type="text"

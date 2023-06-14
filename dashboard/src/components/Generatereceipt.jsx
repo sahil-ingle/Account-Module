@@ -5,7 +5,6 @@ const GenerateReceipt = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedReport, setSelectedReport] = useState('');
 
-
   const handleSearchQueryChange = (event) => {
     setSearchQuery(event.target.value);
   };
@@ -37,8 +36,42 @@ const GenerateReceipt = () => {
   };
 
   const handlePrint = (receiptNo) => {
-    // Add your printing logic here based on the receiptNo
-    console.log(`Printing receipt: ${receiptNo}`);
+    // Find the transaction based on receiptNo
+    const transaction = transactions.find((transaction) => transaction.receiptNo === receiptNo);
+    if (transaction) {
+      // Create a new window and write the content to be printed
+      const printWindow = window.open('', '_blank');
+      printWindow.document.write(
+        `
+        <html>
+          <head>
+            <title>Receipt Print</title>
+            <style>
+              /* Define your print styles here */
+              /* For example, hide unnecessary elements */
+              table { display: none; }
+              /* Or apply custom styles for printing */
+              /* For example, adjust font size and layout */
+              body { font-size: 12px; }
+              /* Add any other print-specific styles you need */
+            </style>
+          </head>
+          <body>
+            <h2>Receipt No: ${transaction.receiptNo}</h2>
+            <p>Name: ${transaction.name}</p>
+            <p>Branch: ${transaction.branch}</p>
+            <p>Academic Year: ${transaction.academicYear}</p>
+            <p>Phone Number: ${transaction.phoneNumber}</p>
+            <!-- Include other transaction details as needed -->
+          </body>
+        </html>
+        `
+      );
+      // Call the print method on the print window
+      printWindow.print();
+      // Close the print window after printing is done
+      printWindow.close();
+    }
   };
 
   const handleReportSelection = (event) => {
@@ -56,7 +89,7 @@ const GenerateReceipt = () => {
         <form onSubmit={handleSubmit} style={styles.form}>
           <div style={styles.inputGroup}>
             <input
-              type="text"
+              type="number"
               placeholder="Search by Receipt No"
               value={searchQuery}
               onChange={handleSearchQueryChange}
@@ -86,7 +119,10 @@ const GenerateReceipt = () => {
                     <td style={styles.tableCell}>{transaction.academicYear}</td>
                     <td style={styles.tableCell}>{transaction.phoneNumber}</td>
                     <td style={styles.tableCell}>
-                      <button style={styles.submitButton} onClick={() => handlePrint(transaction.receiptNo)}>
+                      <button
+                        style={styles.submitButton}
+                        onClick={() => handlePrint(transaction.receiptNo)}
+                      >
                         Print
                       </button>
                     </td>
@@ -104,16 +140,26 @@ const GenerateReceipt = () => {
             id="report"
             value={selectedReport}
             onChange={handleReportSelection}
-            style={{ ...styles.input, backgroundImage: 'none',   marginLeft: "30px", }} // Remove the search icon
+            style={{
+              ...styles.input,
+              backgroundImage: 'none',
+              marginLeft: '30px',
+            }} // Remove the search icon
           >
-            <option value="report" disabled hidden>Select Report</option>
+            <option value="report" disabled hidden>
+              Select Report
+            </option>
             <option value="report1">Report 1</option>
             <option value="report2">Report 2</option>
             <option value="report3">Report 3</option>
           </select>
         </div>
-        <div style={{ ...styles.formContainer, paddingTop: '20px' }}> {/* Add padding */}
-          <button style={{ ...styles.submitButton, width: '150px' }} disabled={!selectedReport}>
+        <div style={{ ...styles.formContainer, paddingTop: '20px' }}>
+          {/* Add padding */}
+          <button
+            style={{ ...styles.submitButton, width: '150px' }}
+            disabled={!selectedReport}
+          >
             Generate Report
           </button>
         </div>
@@ -200,20 +246,22 @@ const styles = {
   },
 
   tableContainer: {
-    maxHeight: '400px',
-    border: '1px solid #ccc',
-    maxWidth: '90%',
-    marginTop: '20px', // Add margin top
-
+    maxHeight: "400px",
+    border: "0.5px solid #e6e6e6",
+    maxWidth: "100%",
+    background: "white",
+    borderRadius: "4px",
+    overflow: "hidden",
+    margin: "10px 0", // Increase the margin to create a bigger cell gap
   },
 
   table: {
-    borderCollapse: "separate",
+    borderCollapse: "collapse",
     width: "100%",
   },
 
   tableCell: {
-    border: "1px solid #ccc",
+    border: "1px solid #e6e6e6",
     padding: "8px",
   },
 };

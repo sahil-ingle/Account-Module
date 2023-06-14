@@ -261,8 +261,8 @@ const CollectFee = () => {
                       <table style={styles.table}>
                         <thead>
                           <tr>
-                            <th>Description</th>
-                            <th>Amount</th>
+                            <th style={{...styles.tableCell, background: "#f6f6f6", textAlign: "left",}}>Description</th>
+                            <th style={{...styles.tableCell, background: "#f6f6f6", textAlign: "left",}}>Amount</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -400,17 +400,21 @@ const styles = {
 
   tableContainer: {
     maxHeight: "400px",
-    border: "1px solid #ccc",
+    border: "5px solid #f6f6f6",
     maxWidth: "90%",
+    background: "white",
+    borderRadius: "4px",
+    overflow: "hidden",
+    margin: "10px 0", // Increase the margin to create a bigger cell gap
   },
 
   table: {
-    borderCollapse: "separate",
+    borderCollapse: "collapse",
     width: "100%",
   },
 
   tableCell: {
-    border: "1px solid #ccc",
+    border: "5px solid #f6f6f6",
     padding: "8px",
   },
 };
