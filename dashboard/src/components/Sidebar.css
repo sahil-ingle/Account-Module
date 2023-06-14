@@ -30,6 +30,7 @@
     text-align: left;
     cursor: pointer;
     outline: none; */
+    
 
     display: block;
     text-align: left;
@@ -41,10 +42,10 @@
 .dropdown-container{
     /* display: none; */
     position: relative;
-    list-style:circle;
     /* z-index: 10; */
-    padding-left: 10px;
+    padding-left: 0px;
     transition: all 0.5s;
+    list-style: none;
 }
 
 .dropdown-container>li{
