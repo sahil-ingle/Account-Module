@@ -225,6 +225,45 @@ app.post("/addFeeHead", (req, res) => {
   );
 });
 
+app.post("/addCategory", (req, res) => {
+  const {name} = req.body;
+  const query =
+    "INSERT INTO categories (name) VALUES (?)";
+  con.query(query, [name],
+    (err, result) => {
+      if (err) {
+        console.error("Error inserting data into the database:", err);
+        res.status(500).json({ success:false,  err });
+        return;
+      }
+      else{
+        res.status(200).json({ success:true, message: "Data inserted successfully", result: result });
+      }
+      res.end(); // Close the connection
+    }
+  );
+});
+
+app.post("/mapcattofeehead", (req, res) => {
+  const {category,feehead,amount} = req.body;
+  
+  const query = 
+    "INSERT INTO cat_fee_association (name) VALUES (?)";
+  con.query(query, [name],
+    (err, result) => {
+      if (err) {
+        console.error("Error inserting data into the database:", err);
+        res.status(500).json({ success:false,  err });
+        return;
+      }
+      else{
+        res.status(200).json({ success:true, message: "Data inserted successfully", result: result });
+      }
+      res.end(); // Close the connection
+    }
+  );
+});
+
 app.listen(port, () => {
   console.log(`running backend server on ${port}`);
 });

@@ -1,47 +1,10 @@
 import React, { useState, useEffect } from "react";
 
 const MapFeeHeadsForm = () => {
-  const [currentTime, setCurrentTime] = useState(new Date());
   const [feeHead, setFeeHead] = useState("");
   const [category, setCategory] = useState("");
   const [amount, setAmount] = useState("");
   const [tableData, setTableData] = useState([]);
-
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 1000);
-
-    return () => {
-      clearInterval(timer);
-    };
-  }, []);
-
-  const formatDate = () => {
-    const options = {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    };
-    return currentTime.toLocaleString("en-US", options);
-  };
-
-  const formatTime = () => {
-    const options = {
-      hour: "numeric",
-      minute: "numeric",
-      second: "numeric",
-    };
-    return currentTime.toLocaleString("en-US", options);
-  };
-
-  const formatWeekday = () => {
-    const options = {
-      weekday: "long",
-    };
-    return currentTime.toLocaleString("en-US", options);
-  };
 
   const handleFormSubmit = (event) => {
     event.preventDefault();

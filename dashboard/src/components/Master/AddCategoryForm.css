@@ -1,22 +1,21 @@
-.fee-selector {
+.cat-selector {
   position: relative;
   display: inline-block;
   margin: 0 30px;
 }
 
-.fee-input {
+.cat-input {
   background-color: #fff;
   color: grey;
   border: 1px solid grey;
   border-radius: 5px;
   padding: 8px;
-  cursor: pointer;
+  /* cursor: pointer; */
   outline: none;
   box-shadow: none;
   font-size: 1em;
   font-family: "Urbanist", sans-serif;
 }
-
 
 .messagepara {
   margin-top: 16px;
@@ -84,11 +83,11 @@
 }
 
 .submitButton {
-    padding: 10px 20px;
-    margin-top: 15px;
-    background-color: #00b695;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
+  padding: 10px 20px;
+  margin-top: 15px;
+  background-color: #00b695;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}

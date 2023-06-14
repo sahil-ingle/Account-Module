@@ -42,7 +42,7 @@ const Sidebar = () => {
                   setActive(!active);
                 }}
                 style={styles.optionText}
-                class="dropdown-btn"
+                className="dropdown-btn"
               >
                 Master
                 <i id="caret-down" className="fa fa-caret-down"></i>

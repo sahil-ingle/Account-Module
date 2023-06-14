@@ -49,7 +49,6 @@ const LoginPage = () => {
       setValidEmail(false);
     }
     if (validEmail && validPassword) {
-      console.log(validEmail, validPassword);
       login();
     }
   };

@@ -19,7 +19,7 @@ const Dashboard = () => {
         <div className="topsec">
           <span>Amount Collected</span>
           <div className="selectperiod">
-            <i class="fa-solid fa-calendar-days "></i>
+            <i className="fa-solid fa-calendar-days "></i>
             <select className="period">
               <option value="Today">Today</option>
               <option value="Month">Month</option>

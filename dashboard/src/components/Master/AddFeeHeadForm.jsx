@@ -6,11 +6,7 @@ const AddFeeHeadForm = () => {
   const [feehead, setFeehead] = useState("");
   const [message, setMessage] = useState("");
 
-  const handleFeeHead = (e) => {
-    setFeehead(e.target.value);
-  };
-
-  const handleAddYear = (e) => {
+  const handleAddFeeHead = (e) => {
     e.preventDefault();
     if (feehead) {
       setMessage(`Fee Head ${feehead} added successfully!`);
@@ -43,7 +39,7 @@ const AddFeeHeadForm = () => {
       <h3>Master {">"} Add Fee Heads</h3>
 
       <div className="formContainer">
-        <form onSubmit={handleAddYear}>
+        <form onSubmit={handleAddFeeHead}>
           <div className="inputGroup">
             <label htmlFor="feehead">Fee Head:</label>
             <div className="fee-selector">

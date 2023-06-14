@@ -8,20 +8,17 @@ import {
   Switch,
   useHistory,
 } from "react-router-dom";
-import MainContent from "./Maincontent";
-import AddStudentForm from "./AddStudentForm";
+// import MainContent from "./Maincontent";
 import GenerateReceipt from "./Generatereceipt";
 import CollectFee from "./CollectFee";
 import Cookies from "js-cookie";
-// import AddFeeHeadsPage from "./Master/AddFeeHeadsPage";
 import Dashboard from "./Dashboard";
-import AddCategoryPage from "./Master/AddCategoryPage";
-import MappingFeeHeadsToCategoriesPage from "./Master/MappingFeeHeadsToCategoriesPage";
 import AddBranchForm from "./Master/AddBranchForm";
-import AddFeeHeadForm from "./AddFeeHeadForm";
-import AddCategoryForm from "./AddCategoryForm";
+import AddFeeHeadForm from "./Master/AddFeeHeadForm";
 import AddAcademicYearForm from "./Master/AddAcademicYearForm";
-import MapFeeHeadsForm from "./MapFeeHeadsForm";
+import MapFeeHeadsForm from "./Master/MapFeeHeadsForm";
+import AddCategoryForm from "./Master/AddCategoryForm";
+import AddStudentForm from "./Master/AddStudentForm";
 
 const Layout = () => {
   let history = useHistory();
