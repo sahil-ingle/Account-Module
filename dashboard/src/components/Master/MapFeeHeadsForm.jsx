@@ -11,16 +11,24 @@ const MapFeeHeadsForm = () => {
   const [allCat, setallCat] = useState([]);
   const [allFee, setallFee] = useState([]);
 
+
   const handleFormSubmit = (event) => {
     event.preventDefault();
-    const newRow = {
-      feeHead: feeHead,
-      amount: amount,
-    };
-    setTableData([...tableData, newRow]);
-    setFeeHead("");
-    setAmount("");
+  
+    if (feeHead.trim() !== '' && amount.trim() !== '') {
+      const newRow = {
+        feeHead: feeHead,
+        amount: amount,
+      };
+      setTableData([...tableData, newRow]);
+      setFeeHead("");
+      setAmount("");
+    } else {
+      window.alert("Please fill in all the fields.");
+    }
   };
+  
+  
 
   const handleDelete = () => {
     const updatedTableData = [...tableData];
@@ -192,8 +200,8 @@ const MapFeeHeadsForm = () => {
             <table style={styles.table}>
               <thead>
                 <tr>
-                  <th>Fee Head</th>
-                  <th>Amount</th>
+                  <th style={{...styles.tableCell, textAlign: "left",}}>Fee Head</th>
+                  <th style={{...styles.tableCell, textAlign: "left",}}>Amount</th>
                 </tr>
               </thead>
               <tbody>
@@ -225,26 +233,6 @@ const styles = {
   mainContent: {
     flex: 1,
     padding: "20px",
-  },
-  greeting: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginBottom: "20px",
-  },
-  dt: {
-    display: "flex",
-    flexDirection: "column",
-    margin: "0 5px",
-  },
-  para: {
-    margin: "2px 0",
-  },
-  horizontalLine: {
-    border: "none",
-    borderTop: "1px solid #ccc",
-    margin: "20px 0",
   },
 
   formContainer: {
@@ -291,17 +279,21 @@ const styles = {
 
   tableContainer: {
     maxHeight: "400px",
-    border: "1px solid #ccc",
+    border: "0.5px solid #e6e6e6",
     maxWidth: "40%",
+    background: "white",
+    borderRadius: "4px",
+    overflow: "hidden",
+    margin: "10px 0", // Increase the margin to create a bigger cell gap
   },
 
   table: {
-    borderCollapse: "separate",
+    borderCollapse: "collapse",
     width: "100%",
   },
 
   tableCell: {
-    border: "1px solid #ccc",
+    border: "1px solid #e6e6e6",
     padding: "8px",
   },
 };

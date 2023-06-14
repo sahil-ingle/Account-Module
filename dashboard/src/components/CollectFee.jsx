@@ -1,321 +1,325 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from 'react';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 const CollectFee = () => {
-  const [currentTime, setCurrentTime] = useState(new Date());
-  const [receiptNo, setReceiptNo] = useState("");
-  const [date, setDate] = useState("");
-  const [academicYear, setAcademicYear] = useState("");
-  const [name, setName] = useState("");
-  const [branch, setBranch] = useState("");
-  const [collegeYear, setCollegeYear] = useState("");
-  const [bankName, setBankName] = useState("");
-  const [bankBranch, setBankBranch] = useState("");
-  const [chequeDate, setChequeDate] = useState("");
-  const [chequeNo, setChequeNo] = useState("");
+  const [receiptNo, setReceiptNo] = useState('');
+  const [date, setDate] = useState('');
+  const [academicYear, setAcademicYear] = useState('');
+  const [name, setName] = useState('');
+  const [branch, setBranch] = useState('');
+  const [collegeYear, setCollegeYear] = useState('');
+  const [bankName, setBankName] = useState('');
+  const [bankBranch, setBankBranch] = useState('');
+  const [chequeDate, setChequeDate] = useState('');
+  const [chequeNo, setChequeNo] = useState('');
   const [tableData, setTableData] = useState([]);
-  const [feeHead, setFeeHead] = useState("");
-  const [amount, setAmount] = useState("");
-
-
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 1000);
-
-    return () => {
-      clearInterval(timer);
-    };
-  }, []);
-
-  const formatDate = () => {
-    const options = {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    };
-    return currentTime.toLocaleString("en-US", options);
-  };
-
-  const formatTime = () => {
-    const options = {
-      hour: "numeric",
-      minute: "numeric",
-      second: "numeric",
-    };
-    return currentTime.toLocaleString("en-US", options);
-  };
-
-  const formatWeekday = () => {
-    const options = {
-      weekday: "long",
-    };
-    return currentTime.toLocaleString("en-US", options);
-  };
+  const [feeHead, setFeeHead] = useState('');
+  const [amount, setAmount] = useState('');
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
+    if (!feeHead || !amount) {
+      alert('Please fill in all the fields.');
+      return;
+    }
     const newRow = {
       feeHead: feeHead,
       amount: amount,
     };
     setTableData([...tableData, newRow]);
-    setFeeHead("");
-    setAmount("");
+    setFeeHead('');
+    setAmount('');
+  };
+
+  const handleNameChange = (e) => {
+    const value = e.target.value.replace(/[0-9]/g, '');
+    setName(value);
+  };
+
+  const handleBranchChange = (e) => {
+    const value = e.target.value.replace(/[0-9]/g, '');
+    setBranch(value);
+  };
+
+  const handleBankNameChange = (e) => {
+    const value = e.target.value.replace(/[0-9]/g, '');
+    setBankName(value);
+  };
+
+  const handleBankBranchChange = (e) => {
+    const value = e.target.value.replace(/[0-9]/g, '');
+    setBankBranch(value);
   };
 
   const handleDelete = () => {
-    const updatedTableData = [...tableData];
-    updatedTableData.pop();
-    setTableData(updatedTableData);
+    if (tableData.length > 0) {
+      const updatedTableData = [...tableData];
+      updatedTableData.pop();
+      setTableData(updatedTableData);
+    }
   };
 
-  const handleSaveTable = () => {
-    console.log("Table Data:", tableData);
+  const handlePrint = () => {
+    if (!receiptNo || !date || !academicYear || !name || !branch || !collegeYear || !bankName || !bankBranch || !chequeDate || !chequeNo) {
+      alert('Please fill in all the fields.');
+      return;
+    }
+  
+    if (tableData.length === 0) {
+      alert('Please add at least one fee head.');
+      return;
+    }
+  
+    const doc = new jsPDF();
+    doc.setFontSize(12);
+  
+    doc.text(`Receipt No: ${receiptNo}`, 10, 10);
+    doc.text(`Date: ${date}`, 10, 20);
+    doc.text(`Academic Year: ${academicYear}`, 10, 30);
+    doc.text(`Name: ${name}`, 10, 40);
+    doc.text(`Branch: ${branch}`, 10, 50);
+    doc.text(`College Year: ${collegeYear}`, 10, 60);
+    doc.text(`Bank Name: ${bankName}`, 10, 70);
+    doc.text(`Bank Branch: ${bankBranch}`, 10, 80);
+    doc.text(`Cheque Date: ${chequeDate}`, 10, 90);
+    doc.text(`Cheque No: ${chequeNo}`, 10, 100);
+  
+    if (tableData.length > 0) {
+      doc.autoTable({
+        startY: 110,
+        head: [['Fee Head', 'Amount']],
+        body: tableData.map(({ feeHead, amount }) => [feeHead, amount]),
+      });
+    }
+  
+    doc.save('receipt.pdf');
   };
-
-  const handleFormSubmit2 = (event) => {
-    event.preventDefault();
-    // Do something with the form data
-    console.log("Receipt No:", receiptNo);
-    console.log("Date:", date);
-    console.log("Academic Year:", academicYear);
-    console.log("Name:", name);
-    console.log("Branch:", branch);
-    console.log("College Year:", collegeYear);
-    console.log("Bank Name:", bankName);
-    console.log("Bank Branch:", bankBranch);
-    console.log("Cheque Date:", chequeDate);
-    console.log("Cheque No:", chequeNo);
-  };
+  
 
   return (
     <div style={styles.mainContent}>
+
       <div style={styles.formContainer}>
-        <h2> COLLECT STUDENT FEE </h2>
-        <form onSubmit={handleFormSubmit2} style={styles.form}>
-          <div style={styles.gridContainer}>
-            <div style={styles.inputGroup}>
-              <h3>Basic Details</h3>
-              <div style={styles.inputBox}>
-                <div style={styles.gridInputContainer}>
-                  <div style={styles.label}>
-                    <label htmlFor="receiptNo">Receipt No:</label>
-                  </div>
-                  <div style={styles.inputGroup}>
-                    <input
-                      type="text"
-                      id="receiptNo"
-                      value={receiptNo}
-                      onChange={(e) => setReceiptNo(e.target.value)}
-                      style={styles.input}
-                    />
-                  </div>
 
-                  <div style={styles.inputGroup}>
-                    <label htmlFor="date">Date:</label>
-                  </div>
-                  <div style={styles.inputGroup}>
-                    <input
-                      type="date"
-                      id="date"
-                      value={date}
-                      onChange={(e) => setDate(e.target.value)}
-                      style={styles.input}
-                    />
-                  </div>
-                  <div style={styles.inputGroup}>
-                    <label htmlFor="academicYear">Academic Year:</label>
-                  </div>
-                  <div style={styles.inputGroup}>
-                    <input
-                      type="text"
-                      id="academicYear"
-                      value={academicYear}
-                      onChange={(e) => setAcademicYear(e.target.value)}
-                      style={styles.input}
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div style={styles.inputGroup}>
-              <h3>Student Details </h3>
-              <div style={styles.inputBox}>
-                <div style={styles.gridInputContainer}>
-                  <div style={styles.label}>
-                    <label htmlFor="name">Name:</label>
-                  </div>
-                  <div style={styles.inputGroup}>
-                    <input
-                      type="text"
-                      id="name"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      style={styles.input}
-                    />
-                  </div>
+        <h1 > COLLECT STUDENT FEE </h1>
 
-                  <div style={styles.inputGroup}>
-                    <label htmlFor="branch">Branch:</label>
-                  </div>
-                  <div style={styles.inputGroup}>
-                    <input
-                      type="text"
-                      id="branch"
-                      value={branch}
-                      onChange={(e) => setBranch(e.target.value)}
-                      style={styles.input}
-                    />
-                  </div>
-                  <div style={styles.inputGroup}>
-                    <label htmlFor="collegeYear">College Year:</label>
-                  </div>
-                  <div style={styles.inputGroup}>
-                    <input
-                      type="number"
-                      id="collegeYear"
-                      value={collegeYear}
-                      onChange={(e) => setCollegeYear(e.target.value)}
-                      style={styles.input}
-                    />
-                  </div>
+        <div style={styles.gridContainer}>
+          <div style={styles.inputGroup}>
+            <h2>Basic Details</h2>
+            <div style={styles.inputBox}>
+              <div style={styles.gridInputContainer}>
+                <div style={styles.label}>
+                  <label htmlFor="receiptNo">Receipt No:</label>
                 </div>
-              </div>
-            </div>
-            <div style={styles.inputGroup}>
-              <h3>Bank Details </h3>
-              <div style={styles.inputBox}>
-                <div style={styles.gridInputContainer}>
-                  <div style={styles.label}>
-                    <label htmlFor="bankName">Bank Name:</label>
-                  </div>
-                  <div style={styles.inputGroup}>
-                    <input
-                      type="text"
-                      id="bankName"
-                      value={bankName}
-                      onChange={(e) => setBankName((e.target.value))}
-                      style={styles.input}
-                    />
-                  </div>
+                <div style={styles.inputGroup}>
+                  <input
+                    type="number"
+                    id="receiptNo"
+                    value={receiptNo}
+                    onChange={(e) => setReceiptNo(parseInt(e.target.value))}
+                    style={styles.input}
+                  />
+                </div>
 
-                  <div style={styles.inputGroup}>
-                    <label htmlFor="bankBranch">Bank Branch:</label>
-                  </div>
-                  <div style={styles.inputGroup}>
-                    <input
-                      type="text"
-                      id="bankBranch"
-                      value={bankBranch}
-                      onChange={(e) => setBankBranch(e.target.value)}
-                      style={styles.input}
-                    />
-                  </div>
-                  <div style={styles.inputGroup}>
-                    <label htmlFor="chequeDate">Cheque Date:</label>
-                  </div>
-                  <div style={styles.inputGroup}>
-                    <input
-                      type="date"
-                      id="chequeDate"
-                      value={chequeDate}
-                      onChange={(e) => setChequeDate(e.target.value)}
-                      style={styles.input}
-                    />
-                  </div>
-                  <div style={styles.inputGroup}>
-                    <label htmlFor="chequeNo">Cheque No:</label>
-                  </div>
-                  <div style={styles.inputGroup}>
-                    <input
-                      type="text"
-                      id="chequeNo"
-                      value={chequeNo}
-                      onChange={(e) => setChequeNo(e.target.value)}
-                      style={styles.input}
-                    />
-                  </div>
+                <div style={styles.inputGroup}>
+                  <label htmlFor="sate">Date:</label>
                 </div>
-              </div>
-            </div>
-            <div style={{ ...styles.inputGroup, gridColumn: "span 2" }}>
-              <div style={styles.inputBox}>
-                <div style={{ ...styles.gridInputContainer, height: "210px" }}>
-                  <div style={{}}>
-                    {tableData.length > 0 && (
-                      <div style={styles.tableContainer}>
-                        <table style={styles.table}>
-                          <thead>
-                            <tr>
-                              <th>Description</th>
-                              <th>Amount</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {tableData.map((data, index) => (
-                              <tr key={index}>
-                                <td style={styles.tableCell}>{data.feeHead}</td>
-                                <td style={styles.tableCell}>{data.amount}</td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </div>
-                    )}
-                  </div>
-                  <form onSubmit={handleFormSubmit}>
-                    <div style={styles.inputGroup}>
-                      <label htmlFor="feeHead">Add Desc:</label>
-                      <input
-                        type="text"
-                        id="feeHead"
-                        value={feeHead}
-                        placeholder="Development Fees"
-                        onChange={(e) => setFeeHead(e.target.value)}
-                        style={{ ...styles.input, width: "225px" }}
-                      />
-                    </div>
-                    <div style={styles.buttonContainer}>
-                      <button
-                        type="submit"
-                        style={{...styles.submitButton, backgroundColor:"#e6e6e6", color:"black"}}
-                        onClick={handleFormSubmit2}
-                      >
-                        Add Line
-                      </button>
-                      <button
-                        type="button"
-                        style={{...styles.submitButton, backgroundColor:"#e6e6e6", color:"black"}}
-                        onClick={handleDelete}
-                      >
-                        Delete Line
-                      </button>
-                    </div>
-                    <label htmlFor="amount">Select Fee Heads:</label>
-                    <input
-                      type="number"
-                      id="amount"
-                      value={amount}
-                      placeholder="12345"
-                      onChange={(e) => setAmount(e.target.value)}
-                      style={styles.input}
-                    />
-                    <div style={styles.buttonContainer}>
-                      <button
-                        type="submit"
-                        style={styles.submitButton}
-                        onClick={handleSaveTable}
-                      >
-                        Print Receipt
-                      </button>
-                    </div>
-                  </form>
+                <div style={styles.inputGroup}>
+                  <input
+                    type="date"
+                    id="date"
+                    value={date}
+                    onChange={(e) => setDate(e.target.value)}
+                    style={styles.input}
+                  />
+                </div>
+                <div style={styles.inputGroup}>
+                  <label htmlFor="academicYear">Academic Year:</label>
+                </div>
+                <div style={styles.inputGroup}>
+                  <input
+                    type="number"
+                    id="academicYear"
+                    value={academicYear}
+                    onChange={(e) => setAcademicYear(parseInt(e.target.value))}
+                    style={styles.input}
+                  />
                 </div>
               </div>
             </div>
           </div>
-        </form>
+          <div style={styles.inputGroup}>
+            <h2>Student Details </h2>
+            <div style={styles.inputBox}>
+              <div style={styles.gridInputContainer}>
+                <div style={styles.label}>
+                  <label htmlFor="name">Name:</label>
+                </div>
+                <div style={styles.inputGroup}>
+                  <input
+                    type="text"
+                    id="name"
+                    value={name}
+                    onChange={handleNameChange}
+                    style={styles.input}
+                  />
+                </div>
+
+                <div style={styles.inputGroup}>
+                  <label htmlFor="branch">Branch:</label>
+                </div>
+                <div style={styles.inputGroup}>
+
+                  <input
+                    type="text"
+                    id="branch"
+                    value={branch}
+                    onChange={handleBranchChange}
+                    style={styles.input}
+
+                  />
+                </div>
+                <div style={styles.inputGroup}>
+                  <label htmlFor="collegeYear">College Year:</label>
+                </div>
+                <div style={styles.inputGroup}>
+                  <input
+                    type="number"
+                    id="collegeYear"
+                    value={collegeYear}
+                    onChange={(e) => setCollegeYear(parseInt(e.target.value))}
+                    style={styles.input}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style={styles.inputGroup}>
+            <h2>Bank Details </h2>
+            <div style={styles.inputBox}>
+              <div style={styles.gridInputContainer}>
+                <div style={styles.label}>
+                  <label htmlFor="bankName">Bank Name:</label>
+                </div>
+                <div style={styles.inputGroup}>
+
+                  <input
+                    type="text"
+                    id="bankName"
+                    value={bankName}
+                    onChange={handleBankNameChange}
+                    style={styles.input}
+                  />
+                </div>
+
+                <div style={styles.inputGroup}>
+                  <label htmlFor="bankBranch">Bank Branch:</label>
+                </div>
+                <div style={styles.inputGroup}>
+                  <input
+                    type="text"
+                    id="bankBranch"
+                    value={bankBranch}
+                    onChange={handleBankBranchChange}
+                    style={styles.input}
+                  />
+                </div>
+                <div style={styles.inputGroup}>
+                  <label htmlFor="chequeDate">Cheque Date:</label>
+                </div>
+                <div style={styles.inputGroup}>
+                  <input
+                    type="date"
+                    id="chequeDate"
+                    value={chequeDate}
+                    onChange={(e) => setChequeDate(e.target.value)}
+                    style={styles.input}
+                  />
+                </div>
+                <div style={styles.inputGroup}>
+                  <label htmlFor="chequeNo">Cheque No:</label>
+                </div>
+                <div style={styles.inputGroup}>
+                  <input
+                    type="number"
+                    id="chequeNo"
+                    value={chequeNo}
+                    onChange={(e) => setChequeNo(parseInt(e.target.value))}
+                    style={styles.input}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style={{ ...styles.inputGroup, gridColumn: 'span 2' }}>
+            <div style={styles.inputBox}>
+              <div style={{...styles.gridInputContainer, height: "210px",}}>
+                <div style={{}}>
+                  {tableData.length > 0 && (
+                    <div style={styles.tableContainer}>
+                      <table style={styles.table}>
+                        <thead>
+                          <tr>
+                            <th style={{...styles.tableCell, background: "#f6f6f6", textAlign: "left",}}>Description</th>
+                            <th style={{...styles.tableCell, background: "#f6f6f6", textAlign: "left",}}>Amount</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+
+                          {tableData.map((data, index) => (
+                            <tr key={index}>
+                              <td style={styles.tableCell}>{data.feeHead}</td>
+                              <td style={styles.tableCell}>{data.amount}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+
+                  )}
+                </div>
+                <form onSubmit={handleFormSubmit}>
+                  <div style={styles.inputGroup}>
+                    <label htmlFor="feeHead">Add Desc:</label>
+                    <input
+                      type="text"
+                      id="feeHead"
+                      value={feeHead}
+                      placeholder="Development Fees"
+                      onChange={(e) => setFeeHead(e.target.value)}
+                      style={{...styles.input,width:"225px"}}
+                    />
+                  </div>
+                  <div style={styles.buttonContainer}>
+                    <button type="submit" style={{...styles.submitButton, backgroundColor:"#e6e6e6", color:"black"}}>
+                      Add Line
+                    </button>
+                    <button type="button" style={{...styles.submitButton, backgroundColor:"#e6e6e6", color:"black"}} onClick={handleDelete}>
+                      Delete Line
+                    </button>
+                  </div>
+                  <label htmlFor="amount">Select Fee Heads:</label>
+                  <input
+                    type="number"
+                    id="amount"
+                    value={amount}
+                    placeholder="12345"
+                    onChange={(e) => setAmount(e.target.value)}
+                    style={styles.input}
+                  />
+                  <div style={styles.buttonContainer}>
+                    <button type="submit" style={styles.submitButton} onClick={handlePrint}>
+                      Print Receipt
+                    </button>
+                  </div>
+                </form>
+
+              </div>
+
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -343,6 +347,7 @@ const styles = {
     display: "grid",
     gridTemplateColumns: "1fr 1fr 1fr",
     gridGap: "10px",
+    paddingTop: " 20px",
   },
 
   gridInputContainer: {
@@ -395,17 +400,21 @@ const styles = {
 
   tableContainer: {
     maxHeight: "400px",
-    border: "1px solid #ccc",
+    border: "5px solid #f6f6f6",
     maxWidth: "90%",
+    background: "white",
+    borderRadius: "4px",
+    overflow: "hidden",
+    margin: "10px 0", // Increase the margin to create a bigger cell gap
   },
 
   table: {
-    borderCollapse: "separate",
+    borderCollapse: "collapse",
     width: "100%",
   },
 
   tableCell: {
-    border: "1px solid #ccc",
+    border: "5px solid #f6f6f6",
     padding: "8px",
   },
 };
