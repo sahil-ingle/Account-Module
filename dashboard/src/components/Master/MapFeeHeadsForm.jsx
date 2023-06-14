@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState, useEffect } from "react";
 
 const MapFeeHeadsForm = () => {
@@ -5,6 +6,10 @@ const MapFeeHeadsForm = () => {
   const [category, setCategory] = useState("");
   const [amount, setAmount] = useState("");
   const [tableData, setTableData] = useState([]);
+  const [catid, setCatid] = useState(0);
+  const [feeid, setFeeid] = useState(0);
+  const [allCat, setallCat] = useState([]);
+  const [allFee, setallFee] = useState([]);
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
@@ -17,22 +22,102 @@ const MapFeeHeadsForm = () => {
     setAmount("");
   };
 
-
   const handleDelete = () => {
     const updatedTableData = [...tableData];
     updatedTableData.pop();
     setTableData(updatedTableData);
   };
 
-
   const handleSaveTable = () => {
     console.log("Table Data:", tableData);
+    FetchCatid();
+    tableData.forEach((e) => {
+      FetchFeeid(e.feeHead);
+      if (feeid !== 0 && catid !== 0) {
+        addData(e.amount);
+        setCatid(0);
+        setFeeid(0);
+      }
+    });
   };
+
+  const FetchCatid = async () => {
+    try {
+      const { data } = await axios.post("http://localhost:4000/fetchCatid", {
+        category: category,
+      });
+      if (!data.found) console.log(data.error);
+      else setCatid(data.result[0].cat_id);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const FetchFeeid = async (fh) => {
+    try {
+      const { data } = await axios.post(`http://localhost:4000/fetchFhid`, {
+        feehead: fh,
+      });
+      if (!data.found) console.log(data.error);
+      else setFeeid(data.result[0].fh_id);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const addData = async (amt) => {
+    try {
+      // const config = { headers: { "Content-Type": "application/json" } };
+      const { data } = await axios.post(
+        `http://localhost:4000/mapcattofeehead`,
+        {
+          cat_id: catid,
+          fh_id: feeid,
+          amount: amt,
+        }
+        // config
+      );
+      if (data.success === true) {
+        console.log("Data Saved successfully");
+      } else {
+        console.log(data.error);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const FetchAllCat = async () => {
+    try {
+      const { data } = await axios.get(`http://localhost:4000/fetchAllCat`);
+      if (!data.found) console.log(data.error);
+      else {
+        setallCat(data.result, ...allCat);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const FetchAllFh = async () => {
+    try {
+      const { data } = await axios.get(`http://localhost:4000/fetchAllFh`);
+      if (!data.found) console.log(data.error);
+      else {
+        setallFee(data.result, ...allFee);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    FetchAllCat();
+    FetchAllFh();
+    // console.log(allCat)
+  }, []);
 
   return (
     <div style={styles.mainContent}>
-
-      <h3>Master {'>'} Mapping fee Heads to Categories</h3>
+      <h3>Master {">"} Mapping fee Heads to Categories</h3>
 
       <div style={styles.formContainer}>
         <form onSubmit={handleFormSubmit}>
@@ -44,23 +129,40 @@ const MapFeeHeadsForm = () => {
               onChange={(e) => setCategory(e.target.value)}
               style={styles.input}
             >
-              <option value="" disabled hidden>Select Category</option>
-              <option value="open">General</option>
-              <option value="obc">OBC</option>
-              <option value="sc">SC</option>
-              <option value="st">ST</option>
+              <option value="" disabled hidden>
+                Select Category
+              </option>
+              {allCat.length > 0 &&
+                allCat.map((cat) => {
+                  return (
+                    <option key={cat.cat_id} value={cat.name}>
+                      {cat.name}
+                    </option>
+                  );
+                })}
             </select>
           </div>
           <div style={styles.inputGroup}>
             <label htmlFor="feeHead">Fee Head:</label>
-            <input
-              type="text"
+            <select
               id="feeHead"
               value={feeHead}
-              placeholder="Development Fees"
               onChange={(e) => setFeeHead(e.target.value)}
               style={styles.input}
-            />
+            >
+              <option value="" disabled hidden>
+                Select Fee Head
+              </option>
+              {allFee.length > 0 &&
+                allFee.map((fee) => {
+                  return (
+                    <option key={fee.fh_id} value={fee.name}>
+                      {fee.name}
+                    </option>
+                  );
+                })}
+            </select>
+
             <label htmlFor="amount">Amount:</label>
             <input
               type="number"
@@ -75,11 +177,13 @@ const MapFeeHeadsForm = () => {
             <button type="submit" style={styles.submitButton}>
               Add Line
             </button>
-            <button type="button" style={styles.submitButton} onClick={handleDelete}>
+            <button
+              type="button"
+              style={styles.submitButton}
+              onClick={handleDelete}
+            >
               Delete Line
             </button>
-
-
           </div>
         </form>
 
@@ -93,7 +197,6 @@ const MapFeeHeadsForm = () => {
                 </tr>
               </thead>
               <tbody>
-
                 {tableData.map((data, index) => (
                   <tr key={index}>
                     <td style={styles.tableCell}>{data.feeHead}</td>
@@ -103,16 +206,20 @@ const MapFeeHeadsForm = () => {
               </tbody>
             </table>
           </div>
-
         )}
-        <button type="submit" style={{ ...styles.submitButton, marginTop: " 30px" }} onClick={handleSaveTable}>Save</button>
+        <button
+          type="submit"
+          style={{ ...styles.submitButton, marginTop: " 30px" }}
+          onClick={handleSaveTable}
+        >
+          Save
+        </button>
       </div>
     </div>
   );
 };
 
 export default MapFeeHeadsForm;
-
 
 const styles = {
   mainContent: {
@@ -149,7 +256,6 @@ const styles = {
   inputGroup: {
     marginBottom: "10px",
     fontWeight: "bold",
-
   },
   label: {
     marginRight: "10px",
@@ -171,7 +277,6 @@ const styles = {
   },
   buttonContainer: {
     display: "flex",
-
   },
   submitButton: {
     padding: "10px 20px",
@@ -184,12 +289,10 @@ const styles = {
     marginBottom: "30px",
   },
 
-
   tableContainer: {
     maxHeight: "400px",
     border: "1px solid #ccc",
     maxWidth: "40%",
-
   },
 
   table: {
@@ -201,6 +304,4 @@ const styles = {
     border: "1px solid #ccc",
     padding: "8px",
   },
-
 };
-

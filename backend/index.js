@@ -159,9 +159,10 @@ app.post("/collect-fee", (req, res) => {
         console.error("Error inserting data into the database:", err);
         res.status(500).json({ error: "An error occurred" });
         return;
-      }
-      else{
-        res.status(200).json({ message: "Data inserted successfully", result: result });
+      } else {
+        res
+          .status(200)
+          .json({ message: "Data inserted successfully", result: result });
       }
       res.end(); // Close the connection
     }
@@ -169,99 +170,171 @@ app.post("/collect-fee", (req, res) => {
 });
 
 app.post("/addBranch", (req, res) => {
-  const {name} = req.body;
-  const query =
-    "INSERT INTO branch (name) VALUES (?)";
-  con.query(query, [name],
-    (err, result) => {
-      if (err) {
-        console.error("Error inserting data into the database:", err);
-        res.status(500).json({ success:false,  err });
-        return;
-      }
-      else{
-        res.status(200).json({ success:true, message: "Data inserted successfully", result: result });
-      }
-      res.end(); // Close the connection
+  const { name } = req.body;
+  const query = "INSERT INTO branch (name) VALUES (?)";
+  con.query(query, [name], (err, result) => {
+    if (err) {
+      console.error("Error inserting data into the database:", err);
+      res.status(500).json({ success: false, err });
+      return;
+    } else {
+      res.status(200).json({
+        success: true,
+        message: "Data inserted successfully",
+        result: result,
+      });
     }
-  );
+    res.end(); // Close the connection
+  });
 });
 
 app.post("/addAcademicYear", (req, res) => {
-  const {year} = req.body;
-  const query =
-    "INSERT INTO academic_year (year) VALUES (?)";
-  con.query(query, [year],
-    (err, result) => {
-      if (err) {
-        console.error("Error inserting data into the database:", err);
-        res.status(500).json({ success:false,  err });
-        return;
-      }
-      else{
-        res.status(200).json({ success:true, message: "Data inserted successfully", result: result });
-      }
-      res.end(); // Close the connection
+  const { year } = req.body;
+  const query = "INSERT INTO academic_year (year) VALUES (?)";
+  con.query(query, [year], (err, result) => {
+    if (err) {
+      console.error("Error inserting data into the database:", err);
+      res.status(500).json({ success: false, err });
+      return;
+    } else {
+      res.status(200).json({
+        success: true,
+        message: "Data inserted successfully",
+        result: result,
+      });
     }
-  );
+    res.end(); // Close the connection
+  });
 });
 
 app.post("/addFeeHead", (req, res) => {
-  const {name} = req.body;
-  const query =
-    "INSERT INTO fee_heads (name) VALUES (?)";
-  con.query(query, [name],
+  const { name } = req.body;
+  const query = "INSERT INTO fee_heads (name) VALUES (?)";
+  con.query(query, [name], (err, result) => {
+    if (err) {
+      console.error("Error inserting data into the database:", err);
+      res.status(500).json({ success: false, err });
+      return;
+    } else {
+      res.status(200).json({
+        success: true,
+        message: "Data inserted successfully",
+        result: result,
+      });
+    }
+    res.end(); // Close the connection
+  });
+});
+
+app.post("/addCategory", (req, res) => {
+  const { name } = req.body;
+  const query = "INSERT INTO categories (name) VALUES (?)";
+  con.query(query, [name], (err, result) => {
+    if (err) {
+      console.error("Error inserting data into the database:", err);
+      res.status(500).json({ success: false, err });
+      return;
+    } else {
+      res.status(200).json({
+        success: true,
+        message: "Data inserted successfully",
+        result: result,
+      });
+    }
+    res.end(); // Close the connection
+  });
+});
+
+app.post("/fetchCatid", (req, res) => {
+  const { category } = req.body;
+  con.query(
+    "SELECT * FROM categories WHERE name = ?",
+    [category],
     (err, result) => {
       if (err) {
-        console.error("Error inserting data into the database:", err);
-        res.status(500).json({ success:false,  err });
-        return;
+        res.status(500).json({ error: err });
+      } else {
+        if (result.length > 0) {
+          res.status(200).json({ found: true, result: result });
+        } else {
+          res.status(404).json({ found: false, error: "Category not found" });
+        }
       }
-      else{
-        res.status(200).json({ success:true, message: "Data inserted successfully", result: result });
-      }
-      res.end(); // Close the connection
+      res.end();
     }
   );
 });
 
-app.post("/addCategory", (req, res) => {
-  const {name} = req.body;
-  const query =
-    "INSERT INTO categories (name) VALUES (?)";
-  con.query(query, [name],
+app.post("/fetchFhid", (req, res) => {
+  const { feehead } = req.body;
+  con.query(
+    "SELECT * FROM fee_heads WHERE name = ?",
+    [feehead],
     (err, result) => {
       if (err) {
-        console.error("Error inserting data into the database:", err);
-        res.status(500).json({ success:false,  err });
-        return;
+        res.status(500).json({ error: err });
+      } else {
+        if (result.length > 0) {
+          res.status(200).json({ found: true, result: result });
+        } else {
+          res.status(404).json({ found: false, error: "Fee head not found" });
+        }
       }
-      else{
-        res.status(200).json({ success:true, message: "Data inserted successfully", result: result });
-      }
-      res.end(); // Close the connection
     }
   );
 });
 
 app.post("/mapcattofeehead", (req, res) => {
-  const {category,feehead,amount} = req.body;
-  
-  const query = 
-    "INSERT INTO cat_fee_association (name) VALUES (?)";
-  con.query(query, [name],
-    (err, result) => {
-      if (err) {
-        console.error("Error inserting data into the database:", err);
-        res.status(500).json({ success:false,  err });
-        return;
-      }
-      else{
-        res.status(200).json({ success:true, message: "Data inserted successfully", result: result });
-      }
-      res.end(); // Close the connection
+  const { cat_id, fh_id, amount } = req.body;
+
+  const query =
+    "INSERT INTO cat_fee_association (cat_id, fh_id, amount) VALUES (?,?,?)";
+  con.query(query, [cat_id, fh_id, amount], (err, result) => {
+    if (err) {
+      console.error("Error inserting data into the database:", err);
+      res.status(500).json({ success: false, err });
+      return;
+    } else {
+      res.status(200).json({
+        success: true,
+        message: "Data inserted successfully",
+        result: result,
+      });
     }
-  );
+    res.end(); // Close the connection
+  });
+});
+
+app.get("/fetchAllCat", (req, res) => {
+  // const { category } = req.body;
+  con.query("SELECT * FROM categories", [], (err, result) => {
+    if (err) {
+      res.status(500).json({ error: err });
+    } else {
+      if (result.length > 0) {
+        res.status(200).json({ found: true, result: result });
+      } else {
+        res.status(404).json({ found: false, error: "Category not found" });
+      }
+    }
+    res.end();
+  });
+});
+
+app.get("/fetchAllFh", (req, res) => {
+  // const { category } = req.body;
+  con.query("SELECT * FROM fee_heads", [], (err, result) => {
+    if (err) {
+      res.status(500).json({ error: err });
+    } else {
+      if (result.length > 0) {
+        res.status(200).json({ found: true, result: result });
+      } else {
+        res.status(404).json({ found: false, error: "Category not found" });
+      }
+    }
+    res.end();
+  });
 });
 
 app.listen(port, () => {
