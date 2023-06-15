@@ -1,46 +1,30 @@
-import React, { useEffect, useState } from 'react';
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 
 const GenerateReceipt = () => {
   const [transactions, setTransactions] = useState([]);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedReport, setSelectedReport] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedReport, setSelectedReport] = useState("");
 
   const handleSearchQueryChange = (event) => {
     setSearchQuery(event.target.value);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     // Fetch transaction records from the database
     // Replace the following code with your actual database fetch logic
-    const dummyData = [
-      {
-        id: 1,
-        receiptNo: '2023001',
-        name: 'John Doe',
-        branch: 'Computer Science',
-        academicYear: '2023',
-        phoneNumber: '1234567890',
-      },
-      {
-        id: 2,
-        receiptNo: '2023002',
-        name: 'Jane Smith',
-        branch: 'Electrical Engineering',
-        academicYear: '2023',
-        phoneNumber: '9876543210',
-      },
-      // Add more dummy transaction records
-    ];
-    setTransactions(dummyData);
+    FetchAllReceipts();
   };
 
   const handlePrint = (receiptNo) => {
     // Find the transaction based on receiptNo
-    const transaction = transactions.find((transaction) => transaction.receiptNo === receiptNo);
+    const transaction = transactions.find(
+      (transaction) => transaction.receiptNo === receiptNo
+    );
     if (transaction) {
       // Create a new window and write the content to be printed
-      const printWindow = window.open('', '_blank');
+      const printWindow = window.open("", "_blank");
       printWindow.document.write(
         `
         <html>
@@ -61,7 +45,7 @@ const GenerateReceipt = () => {
             <p>Name: ${transaction.name}</p>
             <p>Branch: ${transaction.branch}</p>
             <p>Academic Year: ${transaction.academicYear}</p>
-            <p>Phone Number: ${transaction.phoneNumber}</p>
+            <p>Phone Number: ${transaction.phone}</p>
             <!-- Include other transaction details as needed -->
           </body>
         </html>
@@ -78,9 +62,21 @@ const GenerateReceipt = () => {
     setSelectedReport(event.target.value);
   };
 
-  const filteredTransactions = transactions.filter((transaction) =>
-    transaction.receiptNo.includes(searchQuery)
-  );
+  const filteredTransactions = transactions.filter((transaction) => {
+    return (transaction.receiptNo.toString().includes(searchQuery));
+  });
+
+  const FetchAllReceipts = async () => {
+    try {
+      const { data } = await axios.get(`http://localhost:4000/fetchReceipts`);
+      if (!data.found) console.log(data.error);
+      else {
+        setTransactions(data.result);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div style={styles.mainContent}>
@@ -117,7 +113,7 @@ const GenerateReceipt = () => {
                     <td style={styles.tableCell}>{transaction.name}</td>
                     <td style={styles.tableCell}>{transaction.branch}</td>
                     <td style={styles.tableCell}>{transaction.academicYear}</td>
-                    <td style={styles.tableCell}>{transaction.phoneNumber}</td>
+                    <td style={styles.tableCell}>{transaction.phone}</td>
                     <td style={styles.tableCell}>
                       <button
                         style={styles.submitButton}
@@ -142,8 +138,9 @@ const GenerateReceipt = () => {
             onChange={handleReportSelection}
             style={{
               ...styles.input,
-              backgroundImage: 'none',
-              marginLeft: '30px', paddingLeft: "7px",
+              backgroundImage: "none",
+              marginLeft: "30px",
+              paddingLeft: "7px",
             }} // Remove the search icon
           >
             <option value="report" disabled hidden>
@@ -153,18 +150,24 @@ const GenerateReceipt = () => {
             <option value="balanceFee">Balance Fee report</option>
             <option value="admission">Admission report</option>
             <option value="installmentWise">Installment wise report</option>
-            <option value="monthlyTransaction">Monthly Transaction report</option>
+            <option value="monthlyTransaction">
+              Monthly Transaction report
+            </option>
             <option value="yearlyTransaction">Yearly Transaction report</option>
-            <option value="individualTransaction">Individual Transaction report of students</option>
+            <option value="individualTransaction">
+              Individual Transaction report of students
+            </option>
             <option value="feeHeadwise">Fee headwise Transaction report</option>
             <option value="branchWise">Branch wise Transaction report</option>
-            <option value="categoryWise">Category Wise Transaction report</option>
+            <option value="categoryWise">
+              Category Wise Transaction report
+            </option>
           </select>
         </div>
-        <div style={{ ...styles.formContainer, paddingTop: '20px' }}>
+        <div style={{ ...styles.formContainer, paddingTop: "20px" }}>
           {/* Add padding */}
           <button
-            style={{ ...styles.submitButton, width: '150px' }}
+            style={{ ...styles.submitButton, width: "150px" }}
             disabled={!selectedReport}
           >
             Generate Report
@@ -177,9 +180,7 @@ const GenerateReceipt = () => {
 
 export default GenerateReceipt;
 
-
 const styles = {
-
   h2: {
     marginTop: "20px",
     marginBottom: "20px",
@@ -200,13 +201,13 @@ const styles = {
   gridInputContainer: {
     display: "grid",
     gridTemplateColumns: "0.5fr 0.5fr",
-    alignItems: 'center',
+    alignItems: "center",
     height: "150px",
   },
 
   inputGroup: {
     fontWeight: "bold",
-    alignItems: 'center'
+    alignItems: "center",
   },
 
   inputBox: {

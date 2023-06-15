@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import axios from "axios";
 
 const CollectFee = () => {
+  const [student, setStudent] = useState({})
   const [receiptNo, setReceiptNo] = useState('');
   const [date, setDate] = useState('');
   const [academicYear, setAcademicYear] = useState('');
   const [name, setName] = useState('');
   const [branch, setBranch] = useState('');
+  const [phone, setPhone] = useState('')
   const [collegeYear, setCollegeYear] = useState('');
   const [bankName, setBankName] = useState('');
   const [bankBranch, setBankBranch] = useState('');
@@ -60,7 +63,9 @@ const CollectFee = () => {
     }
   };
 
-  const handlePrint = () => {
+  const handlePrint = async() => {
+    FetchStudent();
+    console.log(student)
     if (!receiptNo || !date || !academicYear || !name || !branch || !collegeYear || !bankName || !bankBranch || !chequeDate || !chequeNo) {
       alert('Please fill in all the fields.');
       return;
@@ -70,6 +75,10 @@ const CollectFee = () => {
       alert('Please add at least one fee head.');
       return;
     }
+
+    tableData.map(async ({ feeHead, amount })=>{
+      addData(feeHead, amount);
+    })
   
     const doc = new jsPDF();
     doc.setFontSize(12);
@@ -93,8 +102,60 @@ const CollectFee = () => {
       });
     }
   
-    doc.save('receipt.pdf');
+    // doc.save('receipt.pdf');
   };
+
+  const addData = async (fh, amt) => {
+    try {
+      // const config = { headers: { "Content-Type": "application/json" } };
+      const { data } = await axios.post(
+        `http://localhost:4000/collect-fee`,
+        {
+          "receiptNo":receiptNo,
+          "date":date,
+          "academicYear":academicYear,
+          "name": name,
+          "branch":branch,
+          "phone": student.telephone,
+          "collegeYear":collegeYear,
+          "bankName":bankName,
+          "bankBranch":bankBranch,
+          "chequeDate": chequeDate,
+          "chequeNo":chequeNo,
+          "fee_head": fh,
+          "amount": amt
+      }
+        // config
+      );
+      if (data.success === true) {
+        console.log("Data Saved successfully");
+      } else {
+        console.log(data.err);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const FetchStudent = async() => {
+    try {
+      const { data } = await axios.post(`http://localhost:4000/fetchStudent`,{
+        name: name,
+        branch: branch
+      });
+      if (!data.found) console.log(data.error);
+      else {
+        setStudent(data.result);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  // useEffect(() => {
+  //   FetchStudent();
+  // }, [])
+  
   
 
   return (
