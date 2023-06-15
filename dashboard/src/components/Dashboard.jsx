@@ -1,17 +1,77 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Dashboard.css";
+import axios from "axios";
 
 const Dashboard = () => {
   // Fetch the necessary data from backend or use dummy data
-  const amountCollectedToday = 500; // Amount collected at the current day
-  const amountCollectedMonth = 2500; // Amount collected in the current month
-  const amountCollectedYear = 10000; // Amount collected in the current year
+  const [transactions, setTransactions] = useState([]);
+  const [sum, setsum] = useState(0)
+  const [period, setPeriod] = useState("Today");
 
-  const userDetails = {
-    name: "John Doe",
-    email: "john.doe@example.com",
-    phone: "123-456-7890",
+  const calculateAmountByToday = () => {
+    let s = 0;
+    const dt = new Date();
+    const t = [];
+    const filteredTransactions = transactions.filter((transaction) => {
+      return (new Date(transaction.date.toString()).getDate() === dt.getDate());
+    });
+    filteredTransactions.forEach((transaction) => {
+      s += transaction.amount;
+    })
+    setsum(s);
+  }
+
+  const calculateAmountByMonth = () => {
+    let s = 0;
+    const dt = new Date();
+    const t = [];
+    const filteredTransactions = transactions.filter((transaction) => {
+      return (new Date(transaction.date.toString()).getMonth() === dt.getMonth());
+    });
+    filteredTransactions.forEach((transaction) => {
+      s += transaction.amount;
+    })
+    setsum(s);
+  }
+
+  const calculateAmountByYear = () => {
+    let s = 0;
+    const dt = new Date();
+    const t = [];
+    const filteredTransactions = transactions.filter((transaction) => {
+      return (new Date(transaction.date.toString()).getFullYear() === dt.getFullYear());
+    });
+    filteredTransactions.forEach((transaction) => {
+      s += transaction.amount;
+    })
+    setsum(s);
+  }
+
+  const FetchAllReceipts = async () => {
+    try {
+      const { data } = await axios.get(`http://localhost:4000/fetchReceipts`);
+      if (!data.found) console.log(data.error);
+      else {
+        setTransactions(data.result);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
+  
+  useEffect(() => {
+    FetchAllReceipts();
+  }, [transactions]);
+
+  useEffect(() => {
+    if (period === "Year") {
+      calculateAmountByYear();
+    } else if (period === "Month") {
+      calculateAmountByMonth();
+    } else {
+      calculateAmountByToday();
+    }
+  }, [period]);  
 
   return (
     <>
@@ -20,14 +80,14 @@ const Dashboard = () => {
           <span>Amount Collected</span>
           <div className="selectperiod">
             <i className="fa-solid fa-calendar-days "></i>
-            <select className="period">
+            <select className="period" onChange={(e) => setPeriod(e.target.value)}>
               <option value="Today">Today</option>
               <option value="Month">Month</option>
               <option value="Year">Year</option>
             </select>
           </div>
         </div>
-        <span>$ 12,88,910 /-</span>
+        <span>₹ {sum} /-</span>
       </div>
 
       {/* <div style={styles.dashboard}>
