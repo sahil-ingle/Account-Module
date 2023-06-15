@@ -125,12 +125,13 @@ const MapFeeHeadsForm = () => {
 
   return (
     <div style={styles.mainContent}>
-      <h3>Master {">"} Mapping fee Heads to Categories</h3>
+
+      <h3 style={{ letterSpacing: 3,fontWeight: "bolder" }}>Master Tab {'>'} Mapping fee Heads to Categories</h3>
 
       <div style={styles.formContainer}>
         <form onSubmit={handleFormSubmit}>
           <div style={styles.inputGroup}>
-            <label htmlFor="category">Category:</label>
+            <label htmlFor="category">Select Category:</label>
             <select
               id="category"
               value={category}
@@ -151,7 +152,7 @@ const MapFeeHeadsForm = () => {
             </select>
           </div>
           <div style={styles.inputGroup}>
-            <label htmlFor="feeHead">Fee Head:</label>
+            <label htmlFor="feeHead">Enter Fee Head:</label>
             <select
               id="feeHead"
               value={feeHead}
@@ -172,6 +173,8 @@ const MapFeeHeadsForm = () => {
             </select>
 
             <label htmlFor="amount">Amount:</label>
+            
+            <label htmlFor="amount">Enter Amount:</label>
             <input
               type="number"
               id="amount"

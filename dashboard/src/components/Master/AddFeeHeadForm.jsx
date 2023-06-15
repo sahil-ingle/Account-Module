@@ -36,7 +36,7 @@ const AddFeeHeadForm = () => {
 
   return (
     <div className="mainContent">
-      <h3>Master {">"} Add Fee Heads</h3>
+      <h3 style={{ letterSpacing: 3,fontWeight: "bolder" }}>Master Tab {">"} Add Fee Heads</h3>
 
       <div className="formContainer">
         <form onSubmit={handleAddFeeHead}>
