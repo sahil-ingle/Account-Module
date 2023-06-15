@@ -172,8 +172,6 @@ const MapFeeHeadsForm = () => {
                 })}
             </select>
 
-            <label htmlFor="amount">Amount:</label>
-            
             <label htmlFor="amount">Enter Amount:</label>
             <input
               type="number"
