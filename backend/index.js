@@ -125,6 +125,27 @@ app.post("/addstudent", (req, res) => {
   );
 });
 
+app.post("/fetchStudent", (req, res) => {
+  const { name, branch } = req.body;
+
+  con.query(
+    "SELECT * FROM student WHERE name=? AND branch=?",
+    [name, branch],
+    (err, result) => {
+      if (err) {
+        res.status(500).json({ error: err });
+      } else {
+        if (result.length > 0) {
+          res.status(200).json({ found: true, result: result[0] });
+        } else {
+          res.status(404).json({ found: false, error: "Student not found" });
+        }
+      }
+      res.end();
+    }
+  );
+});
+
 app.post("/collect-fee", (req, res) => {
   const {
     receiptNo,
@@ -132,14 +153,17 @@ app.post("/collect-fee", (req, res) => {
     academicYear,
     name,
     branch,
+    phone,
     collegeYear,
     bankName,
     bankBranch,
     chequeDate,
     chequeNo,
+    fee_head,
+    amount,
   } = req.body;
   const query =
-    "INSERT INTO fee_collection (receiptNo, date, academicYear, name, branch, collegeYear, bankName, bankBranch, chequeDate, chequeNo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    "INSERT INTO fee_collection (receiptNo, date, academicYear, name, branch, phone, collegeYear, bankName, bankBranch, chequeDate, chequeNo, fee_head, amount) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
   con.query(
     query,
     [
@@ -148,25 +172,45 @@ app.post("/collect-fee", (req, res) => {
       academicYear,
       name,
       branch,
+      phone,
       collegeYear,
       bankName,
       bankBranch,
       chequeDate,
       chequeNo,
+      fee_head,
+      amount,
     ],
     (err, result) => {
       if (err) {
         console.error("Error inserting data into the database:", err);
-        res.status(500).json({ error: "An error occurred" });
+        res.status(500).json({ success: false, err });
         return;
       } else {
-        res
-          .status(200)
-          .json({ message: "Data inserted successfully", result: result });
+        res.status(200).json({
+          success: true,
+          message: "Data inserted successfully",
+          result: result,
+        });
       }
       res.end(); // Close the connection
     }
   );
+});
+
+app.get("/fetchReceipts", (req, res) => {
+  con.query("SELECT * FROM fee_collection", [], (err, result) => {
+    if (err) {
+      res.status(500).json({ error: err });
+    } else {
+      if (result.length > 0) {
+        res.status(200).json({ found: true, result: result });
+      } else {
+        res.status(404).json({ found: false, error: "Receipt not found" });
+      }
+    }
+    res.end();
+  });
 });
 
 app.post("/addBranch", (req, res) => {
