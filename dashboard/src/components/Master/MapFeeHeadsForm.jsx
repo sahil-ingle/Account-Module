@@ -5,7 +5,7 @@ const MapFeeHeadsForm = () => {
   const [feeHead, setFeeHead] = useState("");
   const [category, setCategory] = useState("");
   const [amount, setAmount] = useState("");
-  const [tableData, setTableData] = useState([]);
+  const [tableData, setTableData] = useState([{}, {}, {}]);
   const [catid, setCatid] = useState(0);
   const [feeid, setFeeid] = useState(0);
   const [allCat, setallCat] = useState([]);
@@ -20,7 +20,20 @@ const MapFeeHeadsForm = () => {
         feeHead: feeHead,
         amount: amount,
       };
-      setTableData([...tableData, newRow]);
+  
+      // Find the index of the first empty row
+      const emptyRowIndex = tableData.findIndex(row => Object.keys(row).length === 0);
+  
+      // If there's an empty row, replace it with the new row
+      if (emptyRowIndex !== -1) {
+        const updatedTableData = [...tableData];
+        updatedTableData[emptyRowIndex] = newRow;
+        setTableData(updatedTableData);
+      } else {
+        // If there are no empty rows, append the new row at the end
+        setTableData([...tableData, newRow]);
+      }
+  
       setFeeHead("");
       setAmount("");
     } else {
@@ -28,13 +41,17 @@ const MapFeeHeadsForm = () => {
     }
   };
   
-  
-
   const handleDelete = () => {
-    const updatedTableData = [...tableData];
-    updatedTableData.pop();
-    setTableData(updatedTableData);
+    if (tableData.length > 0) {
+      const updatedTableData = [...tableData];
+      updatedTableData.pop(); // Remove the last entered values (last row)
+      setTableData(updatedTableData);
+    } else {
+      window.alert("No rows to delete.");
+    }
   };
+  
+  
 
   const handleSaveTable = () => {
     console.log("Table Data:", tableData);
@@ -296,5 +313,7 @@ const styles = {
   tableCell: {
     border: "1px solid #e6e6e6",
     padding: "8px",
+    height: "40px", // Adjust the height as needed
+    verticalAlign: "middle",
   },
 };

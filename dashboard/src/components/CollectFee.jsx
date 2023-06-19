@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import jsPDF from 'jspdf';
-import 'jspdf-autotable';
+import ReceiptTemplate from './ReceiptTemplate';
 import axios from "axios";
 
 const CollectFee = () => {
@@ -16,7 +15,12 @@ const CollectFee = () => {
   const [bankBranch, setBankBranch] = useState('');
   const [chequeDate, setChequeDate] = useState('');
   const [chequeNo, setChequeNo] = useState('');
-  const [tableData, setTableData] = useState([]);
+  const [tableData, setTableData] = useState([
+    { feeHead: '', amount: '' },
+    { feeHead: '', amount: '' },
+    { feeHead: '', amount: '' },
+    { feeHead: '', amount: '' },
+  ]);
   const [feeHead, setFeeHead] = useState('');
   const [amount, setAmount] = useState('');
 
@@ -26,14 +30,35 @@ const CollectFee = () => {
       alert('Please fill in all the fields.');
       return;
     }
-    const newRow = {
-      feeHead: feeHead,
-      amount: amount,
-    };
-    setTableData([...tableData, newRow]);
+  
+    const updatedTableData = [...tableData];
+  
+    let updated = false;
+  
+    for (let i = 0; i < updatedTableData.length; i++) {
+      const row = updatedTableData[i];
+      if (!row.feeHead || !row.amount) {
+        row.feeHead = feeHead;
+        row.amount = amount;
+        updated = true;
+        break;
+      }
+    }
+  
+    if (!updated) {
+      const newRow = {
+        feeHead: feeHead,
+        amount: amount,
+      };
+      updatedTableData.push(newRow);
+    }
+  
+    setTableData(updatedTableData);
     setFeeHead('');
     setAmount('');
   };
+  
+  
 
   const handleNameChange = (e) => {
     const value = e.target.value.replace(/[0-9]/g, '');
@@ -56,54 +81,17 @@ const CollectFee = () => {
   };
 
   const handleDelete = () => {
-    if (tableData.length > 0) {
-      const updatedTableData = [...tableData];
-      updatedTableData.pop();
-      setTableData(updatedTableData);
+    const maxRowIndex = 4; // Define the maximum index of the rows to keep
+    if (tableData.length <= maxRowIndex) {
+      // If the number of rows is less than or equal to the maximum index
+      const updatedTableData = [...tableData]; // Create a copy of the tableData array
+      updatedTableData.pop(); // Remove the last row from the copy
+      setTableData(updatedTableData); // Update the state with the modified array
     }
   };
+  
 
-  const handlePrint = async() => {
-    FetchStudent();
-    console.log(student)
-    if (!receiptNo || !date || !academicYear || !name || !branch || !collegeYear || !bankName || !bankBranch || !chequeDate || !chequeNo) {
-      alert('Please fill in all the fields.');
-      return;
-    }
-  
-    if (tableData.length === 0) {
-      alert('Please add at least one fee head.');
-      return;
-    }
 
-    tableData.map(async ({ feeHead, amount })=>{
-      addData(feeHead, amount);
-    })
-  
-    const doc = new jsPDF();
-    doc.setFontSize(12);
-  
-    doc.text(`Receipt No: ${receiptNo}`, 10, 10);
-    doc.text(`Date: ${date}`, 10, 20);
-    doc.text(`Academic Year: ${academicYear}`, 10, 30);
-    doc.text(`Name: ${name}`, 10, 40);
-    doc.text(`Branch: ${branch}`, 10, 50);
-    doc.text(`College Year: ${collegeYear}`, 10, 60);
-    doc.text(`Bank Name: ${bankName}`, 10, 70);
-    doc.text(`Bank Branch: ${bankBranch}`, 10, 80);
-    doc.text(`Cheque Date: ${chequeDate}`, 10, 90);
-    doc.text(`Cheque No: ${chequeNo}`, 10, 100);
-  
-    if (tableData.length > 0) {
-      doc.autoTable({
-        startY: 110,
-        head: [['Fee Head', 'Amount']],
-        body: tableData.map(({ feeHead, amount }) => [feeHead, amount]),
-      });
-    }
-  
-    // doc.save('receipt.pdf');
-  };
 
   const addData = async (fh, amt) => {
     try {
@@ -151,6 +139,86 @@ const CollectFee = () => {
       console.log(error);
     }
   }
+
+  const handlePrint = () => {
+    if (
+      !receiptNo ||
+      !date ||
+      !academicYear ||
+      !name ||
+      !branch ||
+      !collegeYear ||
+      !bankName ||
+      !bankBranch ||
+      !chequeDate ||
+      !chequeNo
+    ) {
+      alert('Please fill in all the fields.');
+      return;
+    }
+
+    if (tableData.length === 0) {
+      alert('Please add at least one fee head.');
+      return;
+    }
+
+    const printWindow = window.open('', '_blank');
+    printWindow.document.open();
+    printWindow.document.write(`
+      <html>
+        <head>
+          <title>Receipt</title>
+          <style>
+            /* Add custom CSS styles for printing if needed */
+          </style>
+        </head>
+        <body>
+          ${getPrintableContent()}
+        </body>
+      </html>
+    `);
+    printWindow.document.close();
+    printWindow.print();
+  };
+
+  const getPrintableContent = () => {
+    return `
+      <div>
+        <h1>Receipt</h1>
+        <p>Receipt No: ${receiptNo}</p>
+        <p>Date: ${date}</p>
+        <p>Academic Year: ${academicYear}</p>
+        <p>Name: ${name}</p>
+        <p>Branch: ${branch}</p>
+        <p>College Year: ${collegeYear}</p>
+        <p>Bank Name: ${bankName}</p>
+        <p>Bank Branch: ${bankBranch}</p>
+        <p>Cheque Date: ${chequeDate}</p>
+        <p>Cheque No: ${chequeNo}</p>
+        
+        <table>
+          <thead>
+            <tr>
+              <th>Fee Head</th>
+              <th>Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${tableData
+              .map(({ feeHead, amount }) => {
+                return `
+                  <tr>
+                    <td>${feeHead}</td>
+                    <td>${amount}</td>
+                  </tr>
+                `;
+              })
+              .join('')}
+          </tbody>
+        </table>
+      </div>
+    `;
+  };
 
   // useEffect(() => {
   //   FetchStudent();
@@ -451,7 +519,6 @@ const styles = {
   submitButton: {
     padding: "10px 35px",
     backgroundColor: "#00b695",
-    boxShadow: '1px 2px 9px #F4AAB9',
     color: "white",
     border: "none",
     borderRadius: "4px",
@@ -465,8 +532,7 @@ const styles = {
     maxWidth: "90%",
     background: "white",
     borderRadius: "4px",
-    overflow: "hidden",
-    margin: "10px 0", // Increase the margin to create a bigger cell gap
+    overflow: "hidden",// Increase the margin to create a bigger cell gap
   },
 
   table: {
@@ -477,5 +543,7 @@ const styles = {
   tableCell: {
     border: "5px solid #f6f6f6",
     padding: "8px",
+      height: "40px", // Adjust the height as needed
+      verticalAlign: "middle",
   },
 };
