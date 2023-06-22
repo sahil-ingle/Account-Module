@@ -60,7 +60,32 @@ const AddStudentForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // console.log(studentData); // You can perform any further actions here
+
+    // Check if any required field is empty
+    const requiredFields = [
+      "name",
+      "telephone",
+      "email",
+      "dob",
+      "pin",
+      "addr1",
+      "previous_institute",
+      "previous_education",
+      "gradeofmarks",
+      "yearofadmission",
+      "yearofpassing",
+      "current_status",
+    ];
+
+    const hasEmptyFields = requiredFields.some((field) => {
+      return !studentData[field];
+    });
+
+    if (hasEmptyFields) {
+      alert("Please fill in all required fields.");
+      return;
+    }
+
     addData();
   };
 
