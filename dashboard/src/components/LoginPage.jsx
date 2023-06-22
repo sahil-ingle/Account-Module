@@ -53,13 +53,6 @@ const LoginPage = () => {
     }
   };
 
-  // const handleSubmit = () => {
-  //   if (validEmail && validPassword) {
-  //     console.log(validEmail, validPassword);
-  //     login();
-  //   }
-  // };
-
   const login = async () => {
     try {
       const config = { headers: { "Content-Type": "application/json" } };
@@ -70,7 +63,9 @@ const LoginPage = () => {
       );
       if (data.success === true) {
         console.log("Login successful");
-        Cookies.set("token", data.token);
+        const fourHours = 4 * 60 * 60 * 1000; // Convert 4 hours to milliseconds
+        const expirationDate = new Date(Date.now() + fourHours);
+        Cookies.set("token", data.token, { expires: expirationDate });
         history.push("/");
         window.location.reload();
       } else {
@@ -140,14 +135,12 @@ const LoginPage = () => {
                 )}
               </div>
               <div className="myform-group">
-                <input
-                  id="btn"
-                  type="submit"
-                  value="Login"
-                />
+                <input id="btn" type="submit" value="Login" />
               </div>
             </form>
-            <div className="gotologin">New User ? <Link to="/register"> Register here</Link> </div>
+            <div className="gotologin">
+              New User ? <Link to="/register"> Register here</Link>{" "}
+            </div>
             <div className="footer">www.getflytechnologies.com</div>
           </div>
         </div>

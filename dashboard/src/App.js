@@ -24,11 +24,42 @@ import AddBranchForm from "./components/Master/AddBranchForm";
 const App = () => {
   const [isLoggedin, setisLoggedin] = useState(true);
   useEffect(() => {
-    if (Cookies.get("token") === "") {
-      setisLoggedin(!isLoggedin);
-    }
+    const checkTokenExpiration = () => {
+      const token = Cookies.get("token");
+      if (!token || hasTokenExpired(token)) {
+        setisLoggedin(false);
+      }
+    };
+    checkTokenExpiration(); // Check on initial component mount
+
+    // Add event listener to check token expiration when the page loads
+    window.addEventListener("load", checkTokenExpiration);
+
+    // Clean up the event listener on component unmount
+    return () => {
+      window.removeEventListener("load", checkTokenExpiration);
+    };
   }, []);
 
+  const hasTokenExpired = (token) => {
+    const tokenExpiration = getTokenExpiration(token);
+    const currentTime = Math.floor(Date.now() / 1000); // Get current time in seconds
+
+    return tokenExpiration && currentTime > tokenExpiration;
+  };
+
+  const getTokenExpiration = (token) => {
+    try {
+      const base64Url = token.split(".")[1];
+      const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+      const tokenData = JSON.parse(window.atob(base64));
+      return tokenData.exp;
+    } catch (error) {
+      console.log("Invalid token format");
+      return null;
+    }
+  };
+  
   const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {

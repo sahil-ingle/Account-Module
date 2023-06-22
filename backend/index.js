@@ -54,10 +54,6 @@ app.post("/login", (req, res) => {
       } else {
         if (result.length > 0) {
           sendToken(result[0], 201, res);
-          // res.status(200).json({
-          //   success: true,
-          //   result: result
-          // }); // Set the response code to 200 (OK)
         } else {
           res.json({ success: false, message: "WRONG USERNAME OR PASSWORD" });
         }
