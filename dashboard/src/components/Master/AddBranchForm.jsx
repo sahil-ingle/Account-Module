@@ -4,6 +4,9 @@ import React, { useState, useEffect } from "react";
 const AddBranchForm = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [branch, setBranch] = useState("");
+  const [isOtherSelected, setIsOtherSelected] = useState(false);
+  const [otherBranch, setOtherBranch] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -40,24 +43,25 @@ const AddBranchForm = () => {
     return currentTime.toLocaleString("en-US", options);
   };
 
-  //academic year selector
   const handleFormSubmit = (event) => {
     event.preventDefault();
-    // Do something with the form data
-    // console.log("Branch:", branch);
-    addData();
+    if (isOtherSelected && otherBranch.trim() === "") {
+      setErrorMessage("Please enter a branch name.");
+    } else if (!isOtherSelected && branch === "") {
+      setErrorMessage("Please select a branch.");
+    } else {
+      setErrorMessage("");
+      addData();
+    }
   };
 
   const addData = async () => {
     try {
-      // const config = { headers: { "Content-Type": "application/json" } };
-      const { data } = await axios.post(
-        `http://localhost:4000/addBranch`,
-        {name: branch}
-        // config
-      );
+      const { data } = await axios.post("http://localhost:4000/addBranch", {
+        name: isOtherSelected ? otherBranch : branch,
+      });
       if (data.success === true) {
-        console.log("Data Saved successfully");
+        console.log("Data saved successfully");
       } else {
         console.log(data.error);
       }
@@ -66,30 +70,59 @@ const AddBranchForm = () => {
     }
   };
 
+  const handleBranchChange = (e) => {
+    setBranch(e.target.value);
+    if (e.target.value === "other") {
+      setIsOtherSelected(true);
+    } else {
+      setIsOtherSelected(false);
+    }
+  };
+
+  const handleOtherBranchChange = (e) => {
+    setOtherBranch(e.target.value);
+  };
+
   return (
     <div style={styles.mainContent}>
-      <h3 style={{ letterSpacing: 3,fontWeight: "bolder" }}>Master Tab {'>'} Add Branch</h3>
+      <h3 style={{ letterSpacing: 3, fontWeight: "bolder" }}>
+        Master Tab &gt; Add Branch
+      </h3>
 
       <div style={styles.formContainer}>
-      <form onSubmit={handleFormSubmit}>
-
+        <form onSubmit={handleFormSubmit}>
           <div style={styles.inputGroup}>
-          <label htmlFor="branch">Branch Name:</label>
-            <select
-              id="branch"
-              value={branch}
-              onChange={(e) => setBranch(e.target.value)}
-              style={styles.input}
-            >
-              <option value="branch" disabled hidden>Select Branch</option>
-              <option value="Computer">Computer Science</option>
-              <option value="IT">IT</option>
-              <option value="Electrical">Electrical</option>
-              <option value="Mechanical">Mechanical</option>
-              <option value="Civil">Civil</option>
-              <option value="AI & DS">AI & DS</option>
-            </select>
+            <label htmlFor="branch">Branch Name:</label>
+            {isOtherSelected ? (
+              <input
+                type="text"
+                id="branch"
+                value={otherBranch}
+                onChange={handleOtherBranchChange}
+                style={styles.input}
+                placeholder="Enter branch name"
+              />
+            ) : (
+              <select
+                id="branch"
+                value={branch}
+                onChange={handleBranchChange}
+                style={styles.input}
+              >
+                <option value="" disabled hidden>
+                  Select Branch
+                </option>
+                <option value="computer">Computer Science</option>
+                <option value="it">IT</option>
+                <option value="electrical">Electrical</option>
+                <option value="mechanical">Mechanical</option>
+                <option value="civil">Civil</option>
+                <option value="ai_ds">AI & DS</option>
+                <option value="other">Other</option>
+              </select>
+            )}
           </div>
+          {errorMessage && <p style={styles.error}>{errorMessage}</p>}
           <div style={styles.buttonContainer}>
             <button type="submit" style={styles.submitButton}>
               Add Branch
@@ -118,7 +151,6 @@ const styles = {
   inputGroup: {
     marginBottom: "10px",
     fontWeight: "bold",
-
   },
   label: {
     marginRight: "10px",
@@ -140,7 +172,6 @@ const styles = {
   },
   buttonContainer: {
     display: "flex",
-
   },
   submitButton: {
     padding: "10px 20px",
@@ -151,5 +182,9 @@ const styles = {
     cursor: "pointer",
     marginRight: "70px",
     marginBottom: "30px",
+  },
+  error: {
+    color: "red",
+    marginBottom: "10px",
   },
 };

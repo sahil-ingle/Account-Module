@@ -14,16 +14,16 @@ const MapFeeHeadsForm = () => {
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
-  
+
     if (feeHead.trim() !== '' && amount.trim() !== '') {
       const newRow = {
         feeHead: feeHead,
         amount: amount,
       };
-  
+
       // Find the index of the first empty row
       const emptyRowIndex = tableData.findIndex(row => Object.keys(row).length === 0);
-  
+
       // If there's an empty row, replace it with the new row
       if (emptyRowIndex !== -1) {
         const updatedTableData = [...tableData];
@@ -33,25 +33,21 @@ const MapFeeHeadsForm = () => {
         // If there are no empty rows, append the new row at the end
         setTableData([...tableData, newRow]);
       }
-  
+
       setFeeHead("");
       setAmount("");
     } else {
       window.alert("Please fill in all the fields.");
     }
   };
-  
-  const handleDelete = () => {
-    if (tableData.length > 0) {
-      const updatedTableData = [...tableData];
-      updatedTableData.pop(); // Remove the last entered values (last row)
-      setTableData(updatedTableData);
-    } else {
-      window.alert("No rows to delete.");
-    }
+
+  const handleDeleteRow = (index) => {
+    const updatedTableData = [...tableData];
+    updatedTableData.splice(index, 1); // Remove the row at the specified index
+    setTableData(updatedTableData);
   };
-  
-  
+
+
 
   const handleSaveTable = () => {
     console.log("Table Data:", tableData);
@@ -64,7 +60,9 @@ const MapFeeHeadsForm = () => {
         setFeeid(0);
       }
     });
+    setTableData([]); // Clear the table data after saving
   };
+  
 
   const FetchCatid = async () => {
     try {
@@ -143,7 +141,7 @@ const MapFeeHeadsForm = () => {
   return (
     <div style={styles.mainContent}>
 
-      <h3 style={{ letterSpacing: 3,fontWeight: "bolder" }}>Master Tab {'>'} Mapping fee Heads to Categories</h3>
+      <h3 style={{ letterSpacing: 3, fontWeight: "bolder" }}>Master Tab {'>'} Mapping fee Heads to Categories</h3>
 
       <div style={styles.formContainer}>
         <form onSubmit={handleFormSubmit}>
@@ -203,13 +201,6 @@ const MapFeeHeadsForm = () => {
             <button type="submit" style={styles.submitButton}>
               Add Line
             </button>
-            <button
-              type="button"
-              style={styles.submitButton}
-              onClick={handleDelete}
-            >
-              Delete Line
-            </button>
           </div>
         </form>
 
@@ -218,8 +209,8 @@ const MapFeeHeadsForm = () => {
             <table style={styles.table}>
               <thead>
                 <tr>
-                  <th style={{...styles.tableCell, textAlign: "left",}}>Fee Head</th>
-                  <th style={{...styles.tableCell, textAlign: "left",}}>Amount</th>
+                  <th style={{ ...styles.tableCell, textAlign: "left", }}>Fee Head</th>
+                  <th style={{ ...styles.tableCell, textAlign: "left", }}>Amount</th>
                 </tr>
               </thead>
               <tbody>
@@ -227,6 +218,14 @@ const MapFeeHeadsForm = () => {
                   <tr key={index}>
                     <td style={styles.tableCell}>{data.feeHead}</td>
                     <td style={styles.tableCell}>{data.amount}</td>
+                    <td style={styles.tableCell}>
+                      <button
+                        style={{ ...styles.submitButton, marginRight: "0px", marginBottom: "0px",}}
+                        onClick={() => handleDeleteRow(index)}
+                      >
+                        Delete
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -260,7 +259,6 @@ const styles = {
   },
 
   inputGroup: {
-    marginBottom: "10px",
     fontWeight: "bold",
   },
   label: {
@@ -316,4 +314,5 @@ const styles = {
     height: "40px", // Adjust the height as needed
     verticalAlign: "middle",
   },
+  
 };

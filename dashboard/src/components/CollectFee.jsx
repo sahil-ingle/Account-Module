@@ -23,6 +23,8 @@ const CollectFee = () => {
   ]);
   const [feeHead, setFeeHead] = useState('');
   const [amount, setAmount] = useState('');
+  const [studentId, setStudentId] = useState('');
+
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
@@ -30,11 +32,11 @@ const CollectFee = () => {
       alert('Please fill in all the fields.');
       return;
     }
-  
+
     const updatedTableData = [...tableData];
-  
+
     let updated = false;
-  
+
     for (let i = 0; i < updatedTableData.length; i++) {
       const row = updatedTableData[i];
       if (!row.feeHead || !row.amount) {
@@ -44,7 +46,7 @@ const CollectFee = () => {
         break;
       }
     }
-  
+
     if (!updated) {
       const newRow = {
         feeHead: feeHead,
@@ -52,13 +54,13 @@ const CollectFee = () => {
       };
       updatedTableData.push(newRow);
     }
-  
+
     setTableData(updatedTableData);
     setFeeHead('');
     setAmount('');
   };
-  
-  
+
+
 
   const handleNameChange = (e) => {
     const value = e.target.value.replace(/[0-9]/g, '');
@@ -89,7 +91,7 @@ const CollectFee = () => {
       setTableData(updatedTableData); // Update the state with the modified array
     }
   };
-  
+
 
 
 
@@ -99,20 +101,21 @@ const CollectFee = () => {
       const { data } = await axios.post(
         `http://localhost:4000/collect-fee`,
         {
-          "receiptNo":receiptNo,
-          "date":date,
-          "academicYear":academicYear,
+          "receiptNo": receiptNo,
+          "date": date,
+          "academicYear": academicYear,
           "name": name,
-          "branch":branch,
+          "branch": branch,
           "phone": student.telephone,
-          "collegeYear":collegeYear,
-          "bankName":bankName,
-          "bankBranch":bankBranch,
+          "collegeYear": collegeYear,
+          "bankName": bankName,
+          "bankBranch": bankBranch,
           "chequeDate": chequeDate,
-          "chequeNo":chequeNo,
+          "chequeNo": chequeNo,
           "fee_head": fh,
-          "amount": amt
-      }
+          "amount": amt,
+          "studentId": studentId,
+        }
         // config
       );
       if (data.success === true) {
@@ -125,11 +128,12 @@ const CollectFee = () => {
     }
   };
 
-  const FetchStudent = async() => {
+  const FetchStudent = async () => {
     try {
-      const { data } = await axios.post(`http://localhost:4000/fetchStudent`,{
+      const { data } = await axios.post(`http://localhost:4000/fetchStudent`, {
         name: name,
-        branch: branch
+        branch: branch,
+        studentId: studentId,
       });
       if (!data.found) console.log(data.error);
       else {
@@ -205,15 +209,15 @@ const CollectFee = () => {
           </thead>
           <tbody>
             ${tableData
-              .map(({ feeHead, amount }) => {
-                return `
+        .map(({ feeHead, amount }) => {
+          return `
                   <tr>
                     <td>${feeHead}</td>
                     <td>${amount}</td>
                   </tr>
                 `;
-              })
-              .join('')}
+        })
+        .join('')}
           </tbody>
         </table>
       </div>
@@ -223,8 +227,8 @@ const CollectFee = () => {
   // useEffect(() => {
   //   FetchStudent();
   // }, [])
-  
-  
+
+
 
   return (
     <div style={styles.mainContent}>
@@ -239,6 +243,18 @@ const CollectFee = () => {
             <div style={styles.inputBox}>
               <div style={styles.gridInputContainer}>
                 <div style={styles.label}>
+                  <label htmlFor="studentId">Student ID:</label>
+                </div>
+                <div style={styles.inputGroup}>
+                  <input
+                    type="text"
+                    id="studentId"
+                    value={studentId}
+                    onChange={(e) => setStudentId(e.target.value)}
+                    style={styles.input}
+                  />
+                </div>
+                <div style={styles.label}>
                   <label htmlFor="receiptNo">Receipt No:</label>
                 </div>
                 <div style={styles.inputGroup}>
@@ -251,7 +267,7 @@ const CollectFee = () => {
                   />
                 </div>
 
-                <div style={styles.inputGroup}>
+                <div style={styles.label}>
                   <label htmlFor="sate">Date:</label>
                 </div>
                 <div style={styles.inputGroup}>
@@ -383,15 +399,15 @@ const CollectFee = () => {
           </div>
           <div style={{ ...styles.inputGroup, gridColumn: 'span 2' }}>
             <div style={styles.inputBox}>
-              <div style={{...styles.gridInputContainer, height: "210px",}}>
+              <div style={{ ...styles.gridInputContainer, height: "210px", }}>
                 <div style={{}}>
                   {tableData.length > 0 && (
                     <div style={styles.tableContainer}>
                       <table style={styles.table}>
                         <thead>
                           <tr>
-                            <th style={{...styles.tableCell, background: "#f6f6f6", textAlign: "left",}}>Description</th>
-                            <th style={{...styles.tableCell, background: "#f6f6f6", textAlign: "left",}}>Amount</th>
+                            <th style={{ ...styles.tableCell, background: "#f6f6f6", textAlign: "left", }}>Description</th>
+                            <th style={{ ...styles.tableCell, background: "#f6f6f6", textAlign: "left", }}>Amount</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -417,14 +433,14 @@ const CollectFee = () => {
                       value={feeHead}
                       placeholder="Development Fees"
                       onChange={(e) => setFeeHead(e.target.value)}
-                      style={{...styles.input,width:"225px"}}
+                      style={{ ...styles.input, width: "225px" }}
                     />
                   </div>
                   <div style={styles.buttonContainer}>
-                    <button type="submit" style={{...styles.submitButton, backgroundColor:"#e6e6e6", color:"black"}}>
+                    <button type="submit" style={{ ...styles.submitButton, backgroundColor: "#e6e6e6", color: "black" }}>
                       Add Line
                     </button>
-                    <button type="button" style={{...styles.submitButton, backgroundColor:"#e6e6e6", color:"black"}} onClick={handleDelete}>
+                    <button type="button" style={{ ...styles.submitButton, backgroundColor: "#e6e6e6", color: "black" }} onClick={handleDelete}>
                       Delete Line
                     </button>
                   </div>
@@ -462,7 +478,7 @@ const styles = {
     padding: "20px",
   },
 
-  form:{
+  form: {
     marginTop: "20px"
   },
 
@@ -543,7 +559,7 @@ const styles = {
   tableCell: {
     border: "5px solid #f6f6f6",
     padding: "8px",
-      height: "40px", // Adjust the height as needed
-      verticalAlign: "middle",
+    height: "40px", // Adjust the height as needed
+    verticalAlign: "middle",
   },
 };
