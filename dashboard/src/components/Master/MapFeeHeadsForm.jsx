@@ -5,24 +5,29 @@ const MapFeeHeadsForm = () => {
   const [feeHead, setFeeHead] = useState("");
   const [category, setCategory] = useState("");
   const [amount, setAmount] = useState("");
-  const [tableData, setTableData] = useState([{}, {}, {}]);
+  const [tableData, setTableData] = useState([]);
   const [catid, setCatid] = useState(0);
   const [feeid, setFeeid] = useState(0);
   const [allCat, setallCat] = useState([]);
   const [allFee, setallFee] = useState([]);
 
-
   const handleFormSubmit = (event) => {
     event.preventDefault();
 
-    if (feeHead.trim() !== '' && amount.trim() !== '') {
+    if (feeHead.trim() !== "" && amount.trim() !== "") {
+      FetchFeeid(feeHead);
       const newRow = {
+        // cat_id: catid,
+        category: category,
+        // feeid: feeid,
         feeHead: feeHead,
         amount: amount,
       };
 
       // Find the index of the first empty row
-      const emptyRowIndex = tableData.findIndex(row => Object.keys(row).length === 0);
+      const emptyRowIndex = tableData.findIndex(
+        (row) => Object.keys(row).length === 0
+      );
 
       // If there's an empty row, replace it with the new row
       if (emptyRowIndex !== -1) {
@@ -47,30 +52,32 @@ const MapFeeHeadsForm = () => {
     setTableData(updatedTableData);
   };
 
-
-
-  const handleSaveTable = () => {
+  const handleSaveTable = async () => {
     console.log("Table Data:", tableData);
-    FetchCatid();
-    tableData.forEach((e) => {
-      FetchFeeid(e.feeHead);
-      if (feeid !== 0 && catid !== 0) {
-        addData(e.amount);
-        setCatid(0);
-        setFeeid(0);
-      }
+    // console.log(category);
+    tableData.forEach(async (e) => {
+      // await FetchFeeid(e.feeHead);
+      // console.log(feeid, catid);
+      // if (e.feeid !== 0 && e.catid !== 0) {
+        await addData(e.amount, e.feeHead);
+        // setCatid(0);
+        // setFeeid(0);
+      // }
     });
     setTableData([]); // Clear the table data after saving
   };
-  
 
   const FetchCatid = async () => {
     try {
       const { data } = await axios.post("http://localhost:4000/fetchCatid", {
         category: category,
       });
-      if (!data.found) console.log(data.error);
-      else setCatid(data.result[0].cat_id);
+      if (!data.found) {
+        console.log(data.error);
+      } else {
+        setCatid(data.result[0].cat_id);
+        console.log(catid)
+      }
     } catch (error) {
       console.log(error);
     }
@@ -81,21 +88,25 @@ const MapFeeHeadsForm = () => {
       const { data } = await axios.post(`http://localhost:4000/fetchFhid`, {
         feehead: fh,
       });
-      if (!data.found) console.log(data.error);
-      else setFeeid(data.result[0].fh_id);
+      if (!data.found) {
+        console.log(data.error);
+      } else {
+        setFeeid(data.result[0].fh_id);
+        console.log(feeid)
+      }
     } catch (error) {
       console.log(error);
     }
   };
 
-  const addData = async (amt) => {
+  const addData = async (amt, fhname) => {
     try {
       // const config = { headers: { "Content-Type": "application/json" } };
       const { data } = await axios.post(
         `http://localhost:4000/mapcattofeehead`,
         {
-          cat_id: catid,
-          fh_id: feeid,
+          cat_name: category,
+          fh_name: fhname,
           amount: amt,
         }
         // config
@@ -115,7 +126,7 @@ const MapFeeHeadsForm = () => {
       const { data } = await axios.get(`http://localhost:4000/fetchAllCat`);
       if (!data.found) console.log(data.error);
       else {
-        setallCat(data.result, ...allCat);
+        setallCat(data.result);
       }
     } catch (error) {
       console.log(error);
@@ -126,7 +137,7 @@ const MapFeeHeadsForm = () => {
       const { data } = await axios.get(`http://localhost:4000/fetchAllFh`);
       if (!data.found) console.log(data.error);
       else {
-        setallFee(data.result, ...allFee);
+        setallFee(data.result);
       }
     } catch (error) {
       console.log(error);
@@ -140,8 +151,9 @@ const MapFeeHeadsForm = () => {
 
   return (
     <div style={styles.mainContent}>
-
-      <h3 style={{ letterSpacing: 3, fontWeight: "bolder" }}>Master Tab {'>'} Mapping fee Heads to Categories</h3>
+      <h3 style={{ letterSpacing: 3, fontWeight: "bolder" }}>
+        Master Tab {">"} Mapping fee Heads to Categories
+      </h3>
 
       <div style={styles.formContainer}>
         <form onSubmit={handleFormSubmit}>
@@ -209,8 +221,12 @@ const MapFeeHeadsForm = () => {
             <table style={styles.table}>
               <thead>
                 <tr>
-                  <th style={{ ...styles.tableCell, textAlign: "left", }}>Fee Head</th>
-                  <th style={{ ...styles.tableCell, textAlign: "left", }}>Amount</th>
+                  <th style={{ ...styles.tableCell, textAlign: "left" }}>
+                    Fee Head
+                  </th>
+                  <th style={{ ...styles.tableCell, textAlign: "left" }}>
+                    Amount
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -220,7 +236,11 @@ const MapFeeHeadsForm = () => {
                     <td style={styles.tableCell}>{data.amount}</td>
                     <td style={styles.tableCell}>
                       <button
-                        style={{ ...styles.submitButton, marginRight: "0px", marginBottom: "0px",}}
+                        style={{
+                          ...styles.submitButton,
+                          marginRight: "0px",
+                          marginBottom: "0px",
+                        }}
                         onClick={() => handleDeleteRow(index)}
                       >
                         Delete
@@ -314,5 +334,4 @@ const styles = {
     height: "40px", // Adjust the height as needed
     verticalAlign: "middle",
   },
-  
 };

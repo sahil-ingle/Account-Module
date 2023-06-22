@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./AddStudentForm.css";
 import axios from "axios";
 
@@ -23,6 +23,8 @@ const AddStudentForm = () => {
     branch: "Computer Science",
     admittedtoacademicyear: 0,
   });
+  const [allCat, setallCat] = useState([]);
+  const [allFee, setallFee] = useState([]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -107,10 +109,38 @@ const AddStudentForm = () => {
     }
   };
 
+  const FetchAllCat = async () => {
+    try {
+      const { data } = await axios.get(`http://localhost:4000/fetchAllCat`);
+      if (!data.found) console.log(data.error);
+      else {
+        setallCat(data.result, ...allCat);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const FetchAllFh = async () => {
+    try {
+      const { data } = await axios.get(`http://localhost:4000/fetchAllFh`);
+      if (!data.found) console.log(data.error);
+      else {
+        setallFee(data.result, ...allFee);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    FetchAllCat();
+    FetchAllFh();
+    // console.log(allCat)
+  }, []);
+
   return (
     <div className="add-student-form">
       {/* <h2>Add Student Form</h2> */}
-      <h3>Master {'>'} Add Student</h3>
+      <h3>Master {">"} Add Student</h3>
       <form onSubmit={handleSubmit}>
         <div className="form-section required-fields">
           {/* <h3>Personal Information</h3> */}
@@ -122,7 +152,7 @@ const AddStudentForm = () => {
                 value={studentData.title}
                 onChange={handleInputChange}
                 required
-                style={{borderRadius: "4px 0px 0px 4px"}}
+                style={{ borderRadius: "4px 0px 0px 4px" }}
               >
                 <option value="Mr">Mr</option>
                 <option value="Ms">Ms</option>
@@ -136,7 +166,7 @@ const AddStudentForm = () => {
                 onChange={handleTextInputChange}
                 placeholder="putyourname"
                 required
-                style={{marginLeft: 0, borderRadius: "0px 4px 4px 0px"}}
+                style={{ marginLeft: 0, borderRadius: "0px 4px 4px 0px" }}
               />
             </div>
             <div className="form-item">
@@ -266,7 +296,7 @@ const AddStudentForm = () => {
               />{" "}
             </div>
             <div className="form-item">
-              <label>Category</label>
+              {/* <label>Category</label>
               <select
                 name="category"
                 value={studentData.category}
@@ -274,6 +304,27 @@ const AddStudentForm = () => {
               >
                 <option value="General">General</option>
                 <option value="Regular Students">Regular Students</option>
+              </select> */}
+
+              <label htmlFor="category">Category:</label>
+              <select
+                name="category"
+                id="category"
+                value={studentData.category}
+                onChange={handleInputChange}
+                // style={styles.input}
+              >
+                <option value="" disabled hidden>
+                  Select Category
+                </option>
+                {allCat.length > 0 &&
+                  allCat.map((cat) => {
+                    return (
+                      <option key={cat.cat_id} value={cat.name}>
+                        {cat.name}
+                      </option>
+                    );
+                  })}
               </select>
             </div>
           </div>
@@ -302,18 +353,18 @@ const AddStudentForm = () => {
                 onChange={handleInputChange}
               >
                 <option value="">Select Branch</option>
-                <option value="Computer Science">Computer Science</option>
-                <option value="Electrical Engineering">
+                <option value="Computer">Computer Science</option>
+                <option value="Electrical">
                   Electrical Engineering
                 </option>
-                <option value="Mechanical Engineering">
+                <option value="Mechanical">
                   Mechanical Engineering
                 </option>
-                <option value="Civil Engineering">Civil Engineering</option>
-                <option value="Chemical Engineering">
+                <option value="Civil">Civil Engineering</option>
+                <option value="Chemical">
                   Chemical Engineering
                 </option>
-                <option value="Aerospace Engineering">
+                <option value="Aerospace">
                   Aerospace Engineering
                 </option>
                 {/* Add more options for other engineering branches */}

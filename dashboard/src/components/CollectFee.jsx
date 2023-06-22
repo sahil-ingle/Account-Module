@@ -1,35 +1,36 @@
-import React, { useEffect, useState } from 'react';
-import ReceiptTemplate from './ReceiptTemplate';
+import React, { useEffect, useState } from "react";
+import ReceiptTemplate from "./ReceiptTemplate";
 import axios from "axios";
 
 const CollectFee = () => {
-  const [student, setStudent] = useState({})
-  const [receiptNo, setReceiptNo] = useState('');
-  const [date, setDate] = useState('');
-  const [academicYear, setAcademicYear] = useState('');
-  const [name, setName] = useState('');
-  const [branch, setBranch] = useState('');
-  const [phone, setPhone] = useState('')
-  const [collegeYear, setCollegeYear] = useState('');
-  const [bankName, setBankName] = useState('');
-  const [bankBranch, setBankBranch] = useState('');
-  const [chequeDate, setChequeDate] = useState('');
-  const [chequeNo, setChequeNo] = useState('');
+  const [student, setStudent] = useState({});
+  const [receiptNo, setReceiptNo] = useState("");
+  const [date, setDate] = useState("");
+  const [academicYear, setAcademicYear] = useState("");
+  const [name, setName] = useState("");
+  const [branch, setBranch] = useState("");
+  const [phone, setPhone] = useState("");
+  const [collegeYear, setCollegeYear] = useState("");
+  const [bankName, setBankName] = useState("");
+  const [bankBranch, setBankBranch] = useState("");
+  const [chequeDate, setChequeDate] = useState("");
+  const [chequeNo, setChequeNo] = useState("");
   const [tableData, setTableData] = useState([
-    { feeHead: '', amount: '' },
-    { feeHead: '', amount: '' },
-    { feeHead: '', amount: '' },
-    { feeHead: '', amount: '' },
+    { feeHead: "", amount: "" },
+    // { feeHead: "", amount: "" },
+    // { feeHead: "", amount: "" },
+    // { feeHead: "", amount: "" },
   ]);
-  const [feeHead, setFeeHead] = useState('');
-  const [amount, setAmount] = useState('');
-  const [studentId, setStudentId] = useState('');
-
+  const [feeHead, setFeeHead] = useState("");
+  const [amount, setAmount] = useState("");
+  const [studentId, setStudentId] = useState(0);
+  const [transactions, setTransactions] = useState([]);
+  const [allFee, setallFee] = useState([]);
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
     if (!feeHead || !amount) {
-      alert('Please fill in all the fields.');
+      alert("Please fill in all the fields.");
       return;
     }
 
@@ -56,29 +57,31 @@ const CollectFee = () => {
     }
 
     setTableData(updatedTableData);
-    setFeeHead('');
-    setAmount('');
+    setFeeHead("");
+    setAmount("");
   };
 
-
+  const handleIdChange = (e) => {
+    setStudentId(e.target.value);
+  };
 
   const handleNameChange = (e) => {
-    const value = e.target.value.replace(/[0-9]/g, '');
+    const value = e.target.value.replace(/[0-9]/g, "");
     setName(value);
   };
 
   const handleBranchChange = (e) => {
-    const value = e.target.value.replace(/[0-9]/g, '');
+    const value = e.target.value.replace(/[0-9]/g, "");
     setBranch(value);
   };
 
   const handleBankNameChange = (e) => {
-    const value = e.target.value.replace(/[0-9]/g, '');
+    const value = e.target.value.replace(/[0-9]/g, "");
     setBankName(value);
   };
 
   const handleBankBranchChange = (e) => {
-    const value = e.target.value.replace(/[0-9]/g, '');
+    const value = e.target.value.replace(/[0-9]/g, "");
     setBankBranch(value);
   };
 
@@ -92,29 +95,26 @@ const CollectFee = () => {
     }
   };
 
-
-
-
   const addData = async (fh, amt) => {
     try {
       // const config = { headers: { "Content-Type": "application/json" } };
       const { data } = await axios.post(
         `http://localhost:4000/collect-fee`,
         {
-          "receiptNo": receiptNo,
-          "date": date,
-          "academicYear": academicYear,
-          "name": name,
-          "branch": branch,
-          "phone": student.telephone,
-          "collegeYear": collegeYear,
-          "bankName": bankName,
-          "bankBranch": bankBranch,
-          "chequeDate": chequeDate,
-          "chequeNo": chequeNo,
-          "fee_head": fh,
-          "amount": amt,
-          "studentId": studentId,
+          receiptNo: receiptNo,
+          date: date,
+          academicYear: academicYear,
+          name: name,
+          branch: branch,
+          phone: student.telephone,
+          collegeYear: collegeYear,
+          bankName: bankName,
+          bankBranch: bankBranch,
+          chequeDate: chequeDate,
+          chequeNo: chequeNo,
+          fee_head: fh,
+          amount: amt,
+          studentId: studentId,
         }
         // config
       );
@@ -130,19 +130,55 @@ const CollectFee = () => {
 
   const FetchStudent = async () => {
     try {
-      const { data } = await axios.post(`http://localhost:4000/fetchStudent`, {
-        name: name,
-        branch: branch,
-        studentId: studentId,
+      const response = await axios.post(`http://localhost:4000/fetchStudent`, {
+        sid: parseInt(studentId),
       });
-      if (!data.found) console.log(data.error);
+      const data = await response.data;
+      if (!data.found) {
+        console.log(data.error);
+        return false;
+      } 
       else {
-        setStudent(data.result);
+        setStudent({
+          ...student, ...data.result
+          // name: data.result.name, // Update the name property separately
+          // branch: data.result.branch, // Update the branch property separately
+        });
+        setStudent({
+          ...student, 
+          name: data.result.name, // Update the name property separately
+          branch: data.result.branch, // Update the branch property separately
+        });
+        setName(student.name); // Set the name separately
+        setBranch(student.branch); // Set the branch separately
+        // console.log(student)
+        return true;      
+      }
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  };
+
+  const fetchAllReceipts = async () => {
+    try {
+      const response = await axios.get("http://localhost:4000/fetchReceipts");
+      const data = await response.data;
+      if (!data.found) {
+        console.log(data.error);
+      } else {
+        const sortedTransactions = await data.result.sort(
+          (a, b) => b.receiptNo - a.receiptNo
+        );
+        setTransactions(sortedTransactions);
+        if(receiptNo)
+          setReceiptNo(transactions[0].receiptNo+1)
+        console.log(receiptNo)
       }
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   const handlePrint = () => {
     if (
@@ -157,16 +193,21 @@ const CollectFee = () => {
       !chequeDate ||
       !chequeNo
     ) {
-      alert('Please fill in all the fields.');
-      return;
+      alert("Please fill in all the fields.");
+      // return;
     }
 
     if (tableData.length === 0) {
-      alert('Please add at least one fee head.');
+      alert("Please add at least one fee head.");
       return;
     }
 
-    const printWindow = window.open('', '_blank');
+    // tableData.map(async ({ feeHead, amount })=>{
+    //   // console.log(feeHead, amount);
+    //   addData(feeHead, amount)
+    // })
+
+    const printWindow = window.open("", "_blank");
     printWindow.document.open();
     printWindow.document.write(`
       <html>
@@ -183,6 +224,7 @@ const CollectFee = () => {
     `);
     printWindow.document.close();
     printWindow.print();
+
   };
 
   const getPrintableContent = () => {
@@ -209,33 +251,54 @@ const CollectFee = () => {
           </thead>
           <tbody>
             ${tableData
-        .map(({ feeHead, amount }) => {
-          return `
+              .map(({ feeHead, amount }) => {
+                addData(feeHead, amount)
+                return `
                   <tr>
                     <td>${feeHead}</td>
                     <td>${amount}</td>
                   </tr>
                 `;
-        })
-        .join('')}
+              })
+              .join("")}
           </tbody>
         </table>
       </div>
     `;
   };
 
+  const FetchAllFh = async () => {
+    try {
+      const { data } = await axios.get(`http://localhost:4000/fetchAllFh`);
+      if (!data.found) console.log(data.error);
+      else {
+        setallFee(data.result, ...allFee);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   // useEffect(() => {
   //   FetchStudent();
-  // }, [])
+  // }, [studentId]);
 
+  useEffect(() => {
+    fetchAllReceipts();
+    FetchAllFh();
+  }, []);
 
+  // useEffect(() => {
+  //   if (studentId === "") {
+  //     setStudent({ name: "" });
+  //     setStudent({ branch: "" });
+  //   }
+  // }, [studentId]);
 
   return (
     <div style={styles.mainContent}>
-
       <div style={styles.formContainer}>
-
-        <h1 > COLLECT STUDENT FEE </h1>
+        <h1> COLLECT STUDENT FEE </h1>
 
         <div style={styles.gridContainer}>
           <div style={styles.inputGroup}>
@@ -247,10 +310,12 @@ const CollectFee = () => {
                 </div>
                 <div style={styles.inputGroup}>
                   <input
-                    type="text"
+                    type="number"
                     id="studentId"
                     value={studentId}
-                    onChange={(e) => setStudentId(e.target.value)}
+                    onChange={(e) => {
+                      handleIdChange(e);
+                    }}
                     style={styles.input}
                   />
                 </div>
@@ -261,14 +326,18 @@ const CollectFee = () => {
                   <input
                     type="number"
                     id="receiptNo"
-                    value={receiptNo}
+                    value={
+                      transactions.length > 0
+                        ? transactions[0].receiptNo + 1
+                        : receiptNo + 1
+                    }
                     onChange={(e) => setReceiptNo(parseInt(e.target.value))}
                     style={styles.input}
                   />
                 </div>
 
                 <div style={styles.label}>
-                  <label htmlFor="sate">Date:</label>
+                  <label htmlFor="date">Date:</label>
                 </div>
                 <div style={styles.inputGroup}>
                   <input
@@ -315,14 +384,12 @@ const CollectFee = () => {
                   <label htmlFor="branch">Branch:</label>
                 </div>
                 <div style={styles.inputGroup}>
-
                   <input
                     type="text"
                     id="branch"
                     value={branch}
                     onChange={handleBranchChange}
                     style={styles.input}
-
                   />
                 </div>
                 <div style={styles.inputGroup}>
@@ -348,7 +415,6 @@ const CollectFee = () => {
                   <label htmlFor="bankName">Bank Name:</label>
                 </div>
                 <div style={styles.inputGroup}>
-
                   <input
                     type="text"
                     id="bankName"
@@ -397,21 +463,36 @@ const CollectFee = () => {
               </div>
             </div>
           </div>
-          <div style={{ ...styles.inputGroup, gridColumn: 'span 2' }}>
+          <div style={{ ...styles.inputGroup, gridColumn: "span 2" }}>
             <div style={styles.inputBox}>
-              <div style={{ ...styles.gridInputContainer, height: "210px", }}>
+              <div style={{ ...styles.gridInputContainer, height: "210px" }}>
                 <div style={{}}>
                   {tableData.length > 0 && (
                     <div style={styles.tableContainer}>
                       <table style={styles.table}>
                         <thead>
                           <tr>
-                            <th style={{ ...styles.tableCell, background: "#f6f6f6", textAlign: "left", }}>Description</th>
-                            <th style={{ ...styles.tableCell, background: "#f6f6f6", textAlign: "left", }}>Amount</th>
+                            <th
+                              style={{
+                                ...styles.tableCell,
+                                background: "#f6f6f6",
+                                textAlign: "left",
+                              }}
+                            >
+                              Description
+                            </th>
+                            <th
+                              style={{
+                                ...styles.tableCell,
+                                background: "#f6f6f6",
+                                textAlign: "left",
+                              }}
+                            >
+                              Amount
+                            </th>
                           </tr>
                         </thead>
                         <tbody>
-
                           {tableData.map((data, index) => (
                             <tr key={index}>
                               <td style={styles.tableCell}>{data.feeHead}</td>
@@ -421,30 +502,63 @@ const CollectFee = () => {
                         </tbody>
                       </table>
                     </div>
-
                   )}
                 </div>
                 <form onSubmit={handleFormSubmit}>
                   <div style={styles.inputGroup}>
-                    <label htmlFor="feeHead">Add Desc:</label>
-                    <input
+                    <label htmlFor="feeHead">Fee Head:</label>
+                    {/* <input
                       type="text"
                       id="feeHead"
                       value={feeHead}
                       placeholder="Development Fees"
                       onChange={(e) => setFeeHead(e.target.value)}
                       style={{ ...styles.input, width: "225px" }}
-                    />
+                    /> */}
+
+                    <select
+                      id="feeHead"
+                      value={feeHead}
+                      onChange={(e) => setFeeHead(e.target.value)}
+                      style={{ ...styles.input, width: "225px" }}
+                    >
+                      <option value="" disabled hidden>
+                        Select Fee Head
+                      </option>
+                      {allFee.length > 0 &&
+                        allFee.map((fee) => {
+                          return (
+                            <option key={fee.fh_id} value={fee.name}>
+                              {fee.name}
+                            </option>
+                          );
+                        })}
+                    </select>
                   </div>
                   <div style={styles.buttonContainer}>
-                    <button type="submit" style={{ ...styles.submitButton, backgroundColor: "#e6e6e6", color: "black" }}>
+                    <button
+                      type="submit"
+                      style={{
+                        ...styles.submitButton,
+                        backgroundColor: "#e6e6e6",
+                        color: "black",
+                      }}
+                    >
                       Add Line
                     </button>
-                    <button type="button" style={{ ...styles.submitButton, backgroundColor: "#e6e6e6", color: "black" }} onClick={handleDelete}>
+                    <button
+                      type="button"
+                      style={{
+                        ...styles.submitButton,
+                        backgroundColor: "#e6e6e6",
+                        color: "black",
+                      }}
+                      onClick={handleDelete}
+                    >
                       Delete Line
                     </button>
                   </div>
-                  <label htmlFor="amount">Select Fee Heads:</label>
+                  <label htmlFor="amount">Amount:</label>
                   <input
                     type="number"
                     id="amount"
@@ -454,14 +568,16 @@ const CollectFee = () => {
                     style={styles.input}
                   />
                   <div style={styles.buttonContainer}>
-                    <button type="submit" style={styles.submitButton} onClick={handlePrint}>
+                    <button
+                      type="submit"
+                      style={styles.submitButton}
+                      onClick={handlePrint}
+                    >
                       Print Receipt
                     </button>
                   </div>
                 </form>
-
               </div>
-
             </div>
           </div>
         </div>
@@ -479,7 +595,7 @@ const styles = {
   },
 
   form: {
-    marginTop: "20px"
+    marginTop: "20px",
   },
 
   formContainer: {
@@ -548,7 +664,7 @@ const styles = {
     maxWidth: "90%",
     background: "white",
     borderRadius: "4px",
-    overflow: "hidden",// Increase the margin to create a bigger cell gap
+    overflow: "hidden", // Increase the margin to create a bigger cell gap
   },
 
   table: {

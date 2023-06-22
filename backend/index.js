@@ -122,11 +122,11 @@ app.post("/addstudent", (req, res) => {
 });
 
 app.post("/fetchStudent", (req, res) => {
-  const { name, branch } = req.body;
+  const { sid } = req.body;
 
   con.query(
-    "SELECT * FROM student WHERE name=? AND branch=?",
-    [name, branch],
+    "SELECT * FROM student WHERE sid=?",
+    [sid],
     (err, result) => {
       if (err) {
         res.status(500).json({ error: err });
@@ -325,11 +325,11 @@ app.post("/fetchFhid", (req, res) => {
 });
 
 app.post("/mapcattofeehead", (req, res) => {
-  const { cat_id, fh_id, amount } = req.body;
+  const { cat_name, fh_name, amount } = req.body;
 
   const query =
-    "INSERT INTO cat_fee_association (cat_id, fh_id, amount) VALUES (?,?,?)";
-  con.query(query, [cat_id, fh_id, amount], (err, result) => {
+    "INSERT INTO cat_fee_association (cat_name, fh_name, amount) VALUES (?,?,?)";
+  con.query(query, [cat_name, fh_name, amount], (err, result) => {
     if (err) {
       console.error("Error inserting data into the database:", err);
       res.status(500).json({ success: false, err });
