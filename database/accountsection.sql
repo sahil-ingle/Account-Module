@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 22, 2023 at 06:02 PM
+-- Generation Time: Jun 23, 2023 at 12:53 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -152,16 +152,8 @@ INSERT INTO `fee_collection` (`id`, `receiptNo`, `date`, `academicYear`, `name`,
 (26, 11114, '2023-06-22', 2023, 'Vaibhav', 'Computer Science', '9846785463', 2, 'bob', 'sion', '2023-06-25', 345655, 'Tuition Fees', 5676),
 (36, 11115, '2023-06-22', 2023, 'Rahul', 'Computer ', '7596645463', 3, 'ssb', 'bandra', '2023-06-28', 345678, 'Development Fees', 5676),
 (40, 11115, '2023-06-22', 2023, 'Rahul', 'Computer ', '7596645463', 3, 'ssb', 'bandra', '2023-06-28', 345678, 'Development Fees', 5676),
-(41, 11115, '2023-06-22', 2023, 'Rahul', 'Computer ', '7596645463', 3, 'ssb', 'bandra', '2023-06-28', 345678, '', 0),
-(42, 11115, '2023-06-22', 2023, 'Rahul', 'Computer ', '7596645463', 3, 'ssb', 'bandra', '2023-06-28', 345678, '', 0),
-(43, 11115, '2023-06-22', 2023, 'Rahul', 'Computer ', '7596645463', 3, 'ssb', 'bandra', '2023-06-28', 345678, '', 0),
-(44, 0, '2023-06-29', 2023, NULL, '', '9876567645', 2, 'sfd', 'sdfdf', '2023-06-28', 567655, 'Sports Fees', 5676),
-(45, 0, '2023-06-29', 2023, NULL, '', '9876567645', 2, 'sfd', 'sdfdf', '2023-06-28', 567655, 'Sports Fees', 5676),
-(46, 0, '2023-06-29', 2023, NULL, '', '2345575754', 2, 'sfd', 'sdfdf', '2023-06-28', 567655, 'Sports Fees', 5676),
-(47, 0, '2023-06-29', 2023, NULL, '', '2345575754', 2, 'sfd', 'sdfdf', '2023-06-28', 567655, 'Tuition Fees', 5676),
-(48, 11116, '0000-00-00', 2023, '', '', '9846785463', 3, 'rggg', 'gfgdg', '2023-06-28', 34354, 'Development Fees', 53545),
-(49, 11117, '0000-00-00', 2023, '', '', '9846785463', 3, 'rggg', 'gfgdg', '2023-06-28', 34354, 'Development Fees', 53545),
-(50, 11119, '0000-00-00', 0000, NULL, NULL, '223454343', 0, '', '', '0000-00-00', 0, 'Sports Fees', 909);
+(51, 11120, '2023-06-23', 2023, 'Nabhangi', 'Civil', '456547576', 2, 'pnb', 'bandra', '2023-06-27', 576656, 'Development Fees', 3454534),
+(52, 11121, '2023-06-23', 2023, 'Niraj Raut', 'Computer', '9844567645', 3, 'pnb', 'bandra', '2023-06-27', 576656, 'Sports Fees', 66554);
 
 -- --------------------------------------------------------
 
@@ -218,6 +210,7 @@ CREATE TABLE `student` (
   `current_status` varchar(10) NOT NULL,
   `category` varchar(20) NOT NULL,
   `seatType` varchar(20) NOT NULL,
+  `collegeYear` int(11) NOT NULL,
   `branch` varchar(20) NOT NULL,
   `admittedtoacademicyear` year(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -226,13 +219,15 @@ CREATE TABLE `student` (
 -- Dumping data for table `student`
 --
 
-INSERT INTO `student` (`sid`, `title`, `name`, `telephone`, `email`, `dob`, `pin`, `addr1`, `addr2`, `previous_institute`, `previous_education`, `gradeofmarks`, `yearofadmission`, `yearofpassing`, `current_status`, `category`, `seatType`, `branch`, `admittedtoacademicyear`) VALUES
-(1, 'Mr', 'Omkar', '223454343', 'omkar@gmail.com', '2002-08-28', 400097, 'Malad', '', '', '', 567, 2020, 2024, 'Pass', 'General', 'General', 'Computer ', 2020),
-(2, 'Mr', 'Vaibhav', '3466754757', 'vaibhav@gmail.com', '2002-09-22', 499874, 'Bandra', '', 'dfgsdg', 'sdfgdgsf', 456, 2020, 2020, 'asdfds', 'SC', 'General', 'Computer Science', 2020),
-(3, 'Mr', 'Tanishk', '9846785463', 'omkar34@gmail.com', '2002-08-13', 400097, 'malad', '', '', '', 566, 2020, 2020, 'Pass', 'General', 'General', 'Computer ', 2020),
-(4, 'Mr', 'Rahul', '7596645463', '', '2002-08-28', 400097, 'malad', '', '', '', 567, 2020, 2020, '', 'General', 'General', 'Computer ', 0000),
-(5, 'Ms', 'Ankita Sharma', '9876567645', 'ankita@gmail.com', '1998-04-13', 400097, 'Malad', '', '', '', 567, 2020, 2024, '', 'General', 'General', 'IT', 2020),
-(6, 'Mr', 'Khushi', '234557575474', 'omkar.gwde@gmail.com', '2023-06-07', 400097, 'malad', '', '', '', 456, 2020, 2020, '', 'Regular Students', 'General', 'Computer Science', 2020);
+INSERT INTO `student` (`sid`, `title`, `name`, `telephone`, `email`, `dob`, `pin`, `addr1`, `addr2`, `previous_institute`, `previous_education`, `gradeofmarks`, `yearofadmission`, `yearofpassing`, `current_status`, `category`, `seatType`, `collegeYear`, `branch`, `admittedtoacademicyear`) VALUES
+(1, 'Mr', 'Omkar', '223454343', 'omkar@gmail.com', '2002-08-28', 400097, 'Malad', '', '', '', 567, 2020, 2024, 'Pass', 'General', 'General', 1, 'Computer ', 2020),
+(2, 'Mr', 'Vaibhav', '3466754757', 'vaibhav@gmail.com', '2002-09-22', 499874, 'Bandra', '', 'dfgsdg', 'sdfgdgsf', 456, 2020, 2020, 'asdfds', 'SC', 'General', 4, 'Computer Science', 2020),
+(3, 'Mr', 'Tanishk', '9846785463', 'omkar34@gmail.com', '2002-08-13', 400097, 'malad', '', '', '', 566, 2020, 2020, 'Pass', 'General', 'General', 1, 'Computer ', 2020),
+(4, 'Mr', 'Rahul', '7596645463', '', '2002-08-28', 400097, 'malad', '', '', '', 567, 2020, 2020, '', 'General', 'General', 1, 'Computer ', 0000),
+(5, 'Ms', 'Ankita Sharma', '9876567645', 'ankita@gmail.com', '1998-04-13', 400097, 'Malad', '', '', '', 567, 2020, 2024, '', 'General', 'General', 2, 'IT', 2020),
+(6, 'Mr', 'Khushi', '234557575474', 'omkar.gwde@gmail.com', '2023-06-07', 400097, 'malad', '', '', '', 456, 2020, 2020, '', 'OBC', 'General', 4, 'Computer', 2020),
+(10, 'Ms', 'Niraj Raut', '9844567645', 'niraj@gmail.com', '2002-04-13', 400047, 'santacruz', '', '', '', 567, 2020, 2024, '', 'General', 'General', 3, 'Computer', 2020),
+(11, 'Ms', 'Nabhangi', '456547576', 'nabhangi@gmail.com', '2002-12-09', 400087, 'khar', '', 'ggaegav', 'egdsfgdfg', 454, 2020, 2020, 'sdfdsf', 'General', 'General', 2, 'Civil', 2023);
 
 -- --------------------------------------------------------
 
@@ -354,7 +349,7 @@ ALTER TABLE `cat_fee_association`
 -- AUTO_INCREMENT for table `fee_collection`
 --
 ALTER TABLE `fee_collection`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- AUTO_INCREMENT for table `fee_heads`
@@ -372,7 +367,7 @@ ALTER TABLE `mode`
 -- AUTO_INCREMENT for table `student`
 --
 ALTER TABLE `student`
-  MODIFY `sid` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `sid` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `user`
