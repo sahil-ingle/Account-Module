@@ -20,6 +20,7 @@ const AddStudentForm = () => {
     current_status: "",
     category: "General",
     seatType: "General",
+    collegeYear: 0,
     branch: "Computer Science",
     admittedtoacademicyear: 0,
   });
@@ -76,6 +77,7 @@ const AddStudentForm = () => {
       "gradeofmarks",
       "yearofadmission",
       "yearofpassing",
+      "collegeYear",
       "current_status",
     ];
 
@@ -296,16 +298,6 @@ const AddStudentForm = () => {
               />{" "}
             </div>
             <div className="form-item">
-              {/* <label>Category</label>
-              <select
-                name="category"
-                value={studentData.category}
-                onChange={handleInputChange}
-              >
-                <option value="General">General</option>
-                <option value="Regular Students">Regular Students</option>
-              </select> */}
-
               <label htmlFor="category">Category:</label>
               <select
                 name="category"
@@ -330,8 +322,8 @@ const AddStudentForm = () => {
           </div>
         </div>
         <hr />
-        <div className="form-section required-fields">
-          <div className="form-group">
+        <div  className="form-section required-fields">
+          <div id="form-group5" className="form-group">
             <div className="form-item">
               <label>Seat Types</label>
               <select
@@ -346,6 +338,21 @@ const AddStudentForm = () => {
               </select>
             </div>
             <div className="form-item">
+              <label>College Year</label>
+              <select
+                type="number"
+                name="collegeYear"
+                value={studentData.collegeYear}
+                onChange={handleInputChange}
+              >
+                <option value="">Select Year</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+              </select>
+            </div>
+            <div className="form-item">
               <label>Branch</label>
               <select
                 name="branch"
@@ -354,19 +361,11 @@ const AddStudentForm = () => {
               >
                 <option value="">Select Branch</option>
                 <option value="Computer">Computer Science</option>
-                <option value="Electrical">
-                  Electrical Engineering
-                </option>
-                <option value="Mechanical">
-                  Mechanical Engineering
-                </option>
+                <option value="Electrical">Electrical Engineering</option>
+                <option value="Mechanical">Mechanical Engineering</option>
                 <option value="Civil">Civil Engineering</option>
-                <option value="Chemical">
-                  Chemical Engineering
-                </option>
-                <option value="Aerospace">
-                  Aerospace Engineering
-                </option>
+                <option value="Chemical">Chemical Engineering</option>
+                <option value="Aerospace">Aerospace Engineering</option>
                 {/* Add more options for other engineering branches */}
               </select>
             </div>

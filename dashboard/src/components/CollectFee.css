@@ -1,0 +1,11 @@
+#sid{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+#sid>i{
+    margin-left: 10px;
+    cursor: pointer;
+}

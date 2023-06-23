@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from "react";
 import ReceiptTemplate from "./ReceiptTemplate";
 import axios from "axios";
+import "./CollectFee.css";
 
 const CollectFee = () => {
   const [student, setStudent] = useState({});
-  const [receiptNo, setReceiptNo] = useState("");
+  const [receiptNo, setReceiptNo] = useState(0);
   const [date, setDate] = useState("");
   const [academicYear, setAcademicYear] = useState("");
   const [name, setName] = useState("");
   const [branch, setBranch] = useState("");
   const [phone, setPhone] = useState("");
   const [collegeYear, setCollegeYear] = useState("");
+  const [category, setCategory] = useState("");
   const [bankName, setBankName] = useState("");
   const [bankBranch, setBankBranch] = useState("");
   const [chequeDate, setChequeDate] = useState("");
@@ -65,15 +67,15 @@ const CollectFee = () => {
     setStudentId(e.target.value);
   };
 
-  const handleNameChange = (e) => {
-    const value = e.target.value.replace(/[0-9]/g, "");
-    setName(value);
-  };
+  // const handleNameChange = (e) => {
+  //   const value = e.target.value.replace(/[0-9]/g, "");
+  //   setName(value);
+  // };
 
-  const handleBranchChange = (e) => {
-    const value = e.target.value.replace(/[0-9]/g, "");
-    setBranch(value);
-  };
+  // const handleBranchChange = (e) => {
+  //   const value = e.target.value.replace(/[0-9]/g, "");
+  //   setBranch(value);
+  // };
 
   const handleBankNameChange = (e) => {
     const value = e.target.value.replace(/[0-9]/g, "");
@@ -136,27 +138,13 @@ const CollectFee = () => {
       const data = await response.data;
       if (!data.found) {
         console.log(data.error);
-        return false;
-      } 
-      else {
-        setStudent({
-          ...student, ...data.result
-          // name: data.result.name, // Update the name property separately
-          // branch: data.result.branch, // Update the branch property separately
-        });
-        setStudent({
-          ...student, 
-          name: data.result.name, // Update the name property separately
-          branch: data.result.branch, // Update the branch property separately
-        });
-        setName(student.name); // Set the name separately
-        setBranch(student.branch); // Set the branch separately
-        // console.log(student)
-        return true;      
+        return {};
+      } else {
+        return data.result;
       }
     } catch (error) {
       console.log(error);
-      return false;
+      return {};
     }
   };
 
@@ -166,20 +154,46 @@ const CollectFee = () => {
       const data = await response.data;
       if (!data.found) {
         console.log(data.error);
+        return [];
       } else {
-        const sortedTransactions = await data.result.sort(
-          (a, b) => b.receiptNo - a.receiptNo
-        );
-        setTransactions(sortedTransactions);
-        if(receiptNo)
-          setReceiptNo(transactions[0].receiptNo+1)
-        console.log(receiptNo)
+        return data.result;
       }
     } catch (error) {
       console.log(error);
+      return [];
     }
   };
 
+  const FetchStudentAndSave = async () => {
+    const result = await FetchStudent();
+    if (Object.keys(result).length) {
+      console.log(result);
+      setStudent(result);
+      setName(result.name);
+      setBranch(result.branch);
+      setCollegeYear(result.collegeYear);
+      setCategory(result.category);
+      const latestReceipt = await fetchLatestReceipt();
+      setReceiptNo(latestReceipt+1);
+    } else {
+      alert("Student Not Found!");
+      setStudent({});
+    }
+  };
+
+  const fetchLatestReceipt = async () => {
+    const result = await fetchAllReceipts();
+    if (result.length>0) {
+      const sortedTransactions = await result.sort(
+        (a, b) => b.receiptNo - a.receiptNo
+      );
+      return (sortedTransactions[0].receiptNo);
+    } 
+    else {
+      alert("Receipt Not Found!");
+      return 0;
+    }
+  };
   const handlePrint = () => {
     if (
       !receiptNo ||
@@ -194,18 +208,13 @@ const CollectFee = () => {
       !chequeNo
     ) {
       alert("Please fill in all the fields.");
-      // return;
+      return;
     }
 
     if (tableData.length === 0) {
       alert("Please add at least one fee head.");
       return;
     }
-
-    // tableData.map(async ({ feeHead, amount })=>{
-    //   // console.log(feeHead, amount);
-    //   addData(feeHead, amount)
-    // })
 
     const printWindow = window.open("", "_blank");
     printWindow.document.open();
@@ -222,6 +231,11 @@ const CollectFee = () => {
         </body>
       </html>
     `);
+
+    tableData.map(async ({ feeHead, amount })=>{
+      addData(feeHead, amount)
+    })
+
     printWindow.document.close();
     printWindow.print();
 
@@ -252,7 +266,6 @@ const CollectFee = () => {
           <tbody>
             ${tableData
               .map(({ feeHead, amount }) => {
-                addData(feeHead, amount)
                 return `
                   <tr>
                     <td>${feeHead}</td>
@@ -279,21 +292,10 @@ const CollectFee = () => {
     }
   };
 
-  // useEffect(() => {
-  //   FetchStudent();
-  // }, [studentId]);
 
   useEffect(() => {
-    fetchAllReceipts();
     FetchAllFh();
   }, []);
-
-  // useEffect(() => {
-  //   if (studentId === "") {
-  //     setStudent({ name: "" });
-  //     setStudent({ branch: "" });
-  //   }
-  // }, [studentId]);
 
   return (
     <div style={styles.mainContent}>
@@ -308,7 +310,7 @@ const CollectFee = () => {
                 <div style={styles.label}>
                   <label htmlFor="studentId">Student ID:</label>
                 </div>
-                <div style={styles.inputGroup}>
+                <div id="sid" style={styles.inputGroup}>
                   <input
                     type="number"
                     id="studentId"
@@ -318,6 +320,10 @@ const CollectFee = () => {
                     }}
                     style={styles.input}
                   />
+                  <i
+                    onClick={FetchStudentAndSave}
+                    className="fa-solid fa-magnifying-glass"
+                  ></i>
                 </div>
                 <div style={styles.label}>
                   <label htmlFor="receiptNo">Receipt No:</label>
@@ -326,11 +332,7 @@ const CollectFee = () => {
                   <input
                     type="number"
                     id="receiptNo"
-                    value={
-                      transactions.length > 0
-                        ? transactions[0].receiptNo + 1
-                        : receiptNo + 1
-                    }
+                    value={receiptNo}
                     onChange={(e) => setReceiptNo(parseInt(e.target.value))}
                     style={styles.input}
                   />
@@ -374,8 +376,9 @@ const CollectFee = () => {
                   <input
                     type="text"
                     id="name"
-                    value={name}
-                    onChange={handleNameChange}
+                    value={Object.keys(student).length > 0 ? student.name : ""}
+                    // onChange={handleNameChange}
+                    readOnly
                     style={styles.input}
                   />
                 </div>
@@ -387,8 +390,11 @@ const CollectFee = () => {
                   <input
                     type="text"
                     id="branch"
-                    value={branch}
-                    onChange={handleBranchChange}
+                    value={
+                      Object.keys(student).length > 0 ? student.branch : ""
+                    }
+                    // onChange={handleBranchChange}
+                    readOnly
                     style={styles.input}
                   />
                 </div>
@@ -399,8 +405,23 @@ const CollectFee = () => {
                   <input
                     type="number"
                     id="collegeYear"
-                    value={collegeYear}
-                    onChange={(e) => setCollegeYear(parseInt(e.target.value))}
+                    value={Object.keys(student).length > 0 ? student.collegeYear : ""}
+                    // onChange={(e) => setCollegeYear(parseInt(e.target.value))}
+                    readOnly
+                    style={styles.input}
+                  />
+                </div>
+
+                <div style={styles.inputGroup}>
+                  <label htmlFor="category">Category:</label>
+                </div>
+                <div style={styles.inputGroup}>
+                  <input
+                    type="text"
+                    id="category"
+                    value={Object.keys(student).length > 0 ? student.category : ""}
+                    // onChange={(e) => setCollegeYear(parseInt(e.target.value))}
+                    readOnly
                     style={styles.input}
                   />
                 </div>

@@ -81,12 +81,13 @@ app.post("/addstudent", (req, res) => {
     current_status,
     category,
     seatType,
+    collegeYear,
     branch,
     admittedtoacademicyear,
   } = req.body;
 
   con.query(
-    `INSERT INTO student (title, name, telephone, email, dob, pin, addr1, addr2, previous_institute, previous_education, gradeofmarks, yearofadmission, yearofpassing, current_status, category, seatType, branch, admittedtoacademicyear) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+    `INSERT INTO student (title, name, telephone, email, dob, pin, addr1, addr2, previous_institute, previous_education, gradeofmarks, yearofadmission, yearofpassing, current_status, category, seatType, collegeYear, branch, admittedtoacademicyear) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
     [
       title,
       name,
@@ -104,6 +105,7 @@ app.post("/addstudent", (req, res) => {
       current_status,
       category,
       seatType,
+      collegeYear,
       branch,
       admittedtoacademicyear,
     ],
