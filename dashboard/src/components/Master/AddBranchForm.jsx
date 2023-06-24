@@ -112,12 +112,12 @@ const AddBranchForm = () => {
                 <option value="" disabled hidden>
                   Select Branch
                 </option>
-                <option value="computer">Computer Science</option>
-                <option value="it">IT</option>
-                <option value="electrical">Electrical</option>
-                <option value="mechanical">Mechanical</option>
-                <option value="civil">Civil</option>
-                <option value="ai_ds">AI & DS</option>
+                <option value="Computer">Computer Science</option>
+                <option value="IT">IT</option>
+                <option value="Electrical">Electrical</option>
+                <option value="Mechanical">Mechanical</option>
+                <option value="Civil">Civil</option>
+                <option value="AI&DS">AI & DS</option>
                 <option value="other">Other</option>
               </select>
             )}

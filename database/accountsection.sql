@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 13, 2023 at 07:39 AM
+-- Generation Time: Jun 23, 2023 at 12:53 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `accoutsection`
+-- Database: `accountsection`
 --
 
 -- --------------------------------------------------------
@@ -57,11 +57,12 @@ CREATE TABLE `branch` (
 
 INSERT INTO `branch` (`br_id`, `name`) VALUES
 (6, 'AI & DS'),
-(5, 'Civil'),
+(17, 'Civil'),
 (1, 'Computer'),
 (2, 'Electrical'),
 (4, 'IT'),
-(3, 'Mechanical');
+(3, 'Mechanical'),
+(18, 'rrr');
 
 -- --------------------------------------------------------
 
@@ -74,6 +75,48 @@ CREATE TABLE `categories` (
   `name` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `categories`
+--
+
+INSERT INTO `categories` (`cat_id`, `name`) VALUES
+(1, 'General'),
+(2, 'OBC'),
+(3, 'SC'),
+(4, 'ST');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cat_fee_association`
+--
+
+CREATE TABLE `cat_fee_association` (
+  `ass_id` int(11) NOT NULL,
+  `cat_name` varchar(20) NOT NULL,
+  `fh_name` varchar(20) NOT NULL,
+  `amount` int(11) NOT NULL,
+  `ay_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `cat_fee_association`
+--
+
+INSERT INTO `cat_fee_association` (`ass_id`, `cat_name`, `fh_name`, `amount`, `ay_id`) VALUES
+(38, 'General', 'Development Fees', 5655, 0),
+(39, 'General', 'Tuition Fees', 6567, 0),
+(40, 'General', 'Sports Fees', 7878, 0),
+(41, 'OBC', 'Development Fees', 5454, 0),
+(42, 'OBC', 'Sports Fees', 66777, 0),
+(43, 'OBC', 'Tuition Fees', 57675, 0),
+(44, 'SC', 'Development Fees', 4564, 0),
+(45, 'SC', 'Tuition Fees', 4556, 0),
+(46, 'SC', 'Sports Fees', 45656, 0),
+(47, 'ST', 'Development Fees', 23434, 0),
+(48, 'ST', 'Tuition Fees', 4564, 0),
+(49, 'ST', 'Sports Fees', 56767, 0);
+
 -- --------------------------------------------------------
 
 --
@@ -82,24 +125,35 @@ CREATE TABLE `categories` (
 
 CREATE TABLE `fee_collection` (
   `id` int(11) NOT NULL,
-  `receiptNo` varchar(50) DEFAULT NULL,
+  `receiptNo` int(11) NOT NULL,
   `date` date DEFAULT NULL,
-  `academicYear` varchar(50) DEFAULT NULL,
+  `academicYear` year(4) DEFAULT NULL,
   `name` varchar(50) DEFAULT NULL,
   `branch` varchar(50) DEFAULT NULL,
+  `phone` varchar(10) NOT NULL,
   `collegeYear` int(11) DEFAULT NULL,
   `bankName` varchar(50) DEFAULT NULL,
   `bankBranch` varchar(50) DEFAULT NULL,
   `chequeDate` date DEFAULT NULL,
-  `chequeNo` varchar(50) DEFAULT NULL
+  `chequeNo` int(50) DEFAULT NULL,
+  `fee_head` varchar(20) NOT NULL,
+  `amount` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `fee_collection`
 --
 
-INSERT INTO `fee_collection` (`id`, `receiptNo`, `date`, `academicYear`, `name`, `branch`, `collegeYear`, `bankName`, `bankBranch`, `chequeDate`, `chequeNo`) VALUES
-(1, '1040', '2023-06-13', '2023', 'Rahul', 'Computer', 3, 'SBI', 'Sion', '2023-06-13', '334');
+INSERT INTO `fee_collection` (`id`, `receiptNo`, `date`, `academicYear`, `name`, `branch`, `phone`, `collegeYear`, `bankName`, `bankBranch`, `chequeDate`, `chequeNo`, `fee_head`, `amount`) VALUES
+(1, 11111, '2022-12-31', 2023, 'Rahul', 'Computer', '7896785463', 3, 'SBI', 'Sion', '2023-06-13', 334, 'Development Fees', 23435),
+(2, 11112, '2023-06-21', 2023, 'Omkar', 'Computer ', '223454343', 3, 'sbi', 'sion', '2023-06-22', 456768, 'Tuition Fees', 54656),
+(24, 11113, '2023-06-22', 2023, 'Vaibhav', 'Computer Science', '3466754757', 3, 'bob', 'sion', '2023-06-25', 345655, 'Development Fees', 23423432),
+(25, 11113, '2023-06-22', 2023, 'Vaibhav', 'Computer Science', '3466754757', 3, 'bob', 'sion', '2023-06-25', 345655, 'Sports Fees', 45555),
+(26, 11114, '2023-06-22', 2023, 'Vaibhav', 'Computer Science', '9846785463', 2, 'bob', 'sion', '2023-06-25', 345655, 'Tuition Fees', 5676),
+(36, 11115, '2023-06-22', 2023, 'Rahul', 'Computer ', '7596645463', 3, 'ssb', 'bandra', '2023-06-28', 345678, 'Development Fees', 5676),
+(40, 11115, '2023-06-22', 2023, 'Rahul', 'Computer ', '7596645463', 3, 'ssb', 'bandra', '2023-06-28', 345678, 'Development Fees', 5676),
+(51, 11120, '2023-06-23', 2023, 'Nabhangi', 'Civil', '456547576', 2, 'pnb', 'bandra', '2023-06-27', 576656, 'Development Fees', 3454534),
+(52, 11121, '2023-06-23', 2023, 'Niraj Raut', 'Computer', '9844567645', 3, 'pnb', 'bandra', '2023-06-27', 576656, 'Sports Fees', 66554);
 
 -- --------------------------------------------------------
 
@@ -111,6 +165,15 @@ CREATE TABLE `fee_heads` (
   `fh_id` int(11) NOT NULL,
   `name` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `fee_heads`
+--
+
+INSERT INTO `fee_heads` (`fh_id`, `name`) VALUES
+(2, 'Development Fees'),
+(4, 'Sports Fees'),
+(1, 'Tuition Fees');
 
 -- --------------------------------------------------------
 
@@ -147,6 +210,7 @@ CREATE TABLE `student` (
   `current_status` varchar(10) NOT NULL,
   `category` varchar(20) NOT NULL,
   `seatType` varchar(20) NOT NULL,
+  `collegeYear` int(11) NOT NULL,
   `branch` varchar(20) NOT NULL,
   `admittedtoacademicyear` year(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -155,10 +219,15 @@ CREATE TABLE `student` (
 -- Dumping data for table `student`
 --
 
-INSERT INTO `student` (`sid`, `title`, `name`, `telephone`, `email`, `dob`, `pin`, `addr1`, `addr2`, `previous_institute`, `previous_education`, `gradeofmarks`, `yearofadmission`, `yearofpassing`, `current_status`, `category`, `seatType`, `branch`, `admittedtoacademicyear`) VALUES
-(1, 'Mr', 'Omkar', '223454343', 'omkar@gmail.com', '2002-08-28', 400097, 'Malad', '', '', '', 567, 2020, 2024, 'Pass', 'General', 'General', 'Computer Science', 2020),
-(3, 'Mr', 'Tanishk', '', 'omkar34@gmail.com', '2002-08-13', 400097, 'malad', '', '', '', 566, 2020, 2020, 'Pass', 'General', 'General', 'Computer Science', 2020),
-(4, 'Mr', 'Rahul', '', '', '2002-08-28', 400097, 'malad', '', '', '', 567, 2020, 2020, '', 'General', 'General', 'Computer Science', 0000);
+INSERT INTO `student` (`sid`, `title`, `name`, `telephone`, `email`, `dob`, `pin`, `addr1`, `addr2`, `previous_institute`, `previous_education`, `gradeofmarks`, `yearofadmission`, `yearofpassing`, `current_status`, `category`, `seatType`, `collegeYear`, `branch`, `admittedtoacademicyear`) VALUES
+(1, 'Mr', 'Omkar', '223454343', 'omkar@gmail.com', '2002-08-28', 400097, 'Malad', '', '', '', 567, 2020, 2024, 'Pass', 'General', 'General', 1, 'Computer ', 2020),
+(2, 'Mr', 'Vaibhav', '3466754757', 'vaibhav@gmail.com', '2002-09-22', 499874, 'Bandra', '', 'dfgsdg', 'sdfgdgsf', 456, 2020, 2020, 'asdfds', 'SC', 'General', 4, 'Computer Science', 2020),
+(3, 'Mr', 'Tanishk', '9846785463', 'omkar34@gmail.com', '2002-08-13', 400097, 'malad', '', '', '', 566, 2020, 2020, 'Pass', 'General', 'General', 1, 'Computer ', 2020),
+(4, 'Mr', 'Rahul', '7596645463', '', '2002-08-28', 400097, 'malad', '', '', '', 567, 2020, 2020, '', 'General', 'General', 1, 'Computer ', 0000),
+(5, 'Ms', 'Ankita Sharma', '9876567645', 'ankita@gmail.com', '1998-04-13', 400097, 'Malad', '', '', '', 567, 2020, 2024, '', 'General', 'General', 2, 'IT', 2020),
+(6, 'Mr', 'Khushi', '234557575474', 'omkar.gwde@gmail.com', '2023-06-07', 400097, 'malad', '', '', '', 456, 2020, 2020, '', 'OBC', 'General', 4, 'Computer', 2020),
+(10, 'Ms', 'Niraj Raut', '9844567645', 'niraj@gmail.com', '2002-04-13', 400047, 'santacruz', '', '', '', 567, 2020, 2024, '', 'General', 'General', 3, 'Computer', 2020),
+(11, 'Ms', 'Nabhangi', '456547576', 'nabhangi@gmail.com', '2002-12-09', 400087, 'khar', '', 'ggaegav', 'egdsfgdfg', 454, 2020, 2020, 'sdfdsf', 'General', 'General', 2, 'Civil', 2023);
 
 -- --------------------------------------------------------
 
@@ -210,6 +279,12 @@ ALTER TABLE `categories`
   ADD UNIQUE KEY `name` (`name`);
 
 --
+-- Indexes for table `cat_fee_association`
+--
+ALTER TABLE `cat_fee_association`
+  ADD PRIMARY KEY (`ass_id`);
+
+--
 -- Indexes for table `fee_collection`
 --
 ALTER TABLE `fee_collection`
@@ -250,31 +325,37 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `academic_year`
 --
 ALTER TABLE `academic_year`
-  MODIFY `ay_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `ay_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `branch`
 --
 ALTER TABLE `branch`
-  MODIFY `br_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `br_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `cat_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `cat_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `cat_fee_association`
+--
+ALTER TABLE `cat_fee_association`
+  MODIFY `ass_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 
 --
 -- AUTO_INCREMENT for table `fee_collection`
 --
 ALTER TABLE `fee_collection`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- AUTO_INCREMENT for table `fee_heads`
 --
 ALTER TABLE `fee_heads`
-  MODIFY `fh_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `fh_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `mode`
@@ -286,7 +367,7 @@ ALTER TABLE `mode`
 -- AUTO_INCREMENT for table `student`
 --
 ALTER TABLE `student`
-  MODIFY `sid` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `sid` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `user`

@@ -187,6 +187,7 @@ export default App;
 const styles = {
   mainContent: {
     flex: 1,
+    width: "50%",
     padding: "20px",
   },
   greeting: {

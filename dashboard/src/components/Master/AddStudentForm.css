@@ -76,6 +76,16 @@
   width: 50%;
 }
 
+#form-group5>.form-item{
+  display: flex;
+  align-items: center;
+  /* width: 40%; */
+}
+#form-group5>.form-item>select{
+  margin-right: 40px;
+  /* width: 100% !important; */
+}
+
 .add-student-form>form>button[type="submit"] {
   display: block;
   /* width: 100%; */
